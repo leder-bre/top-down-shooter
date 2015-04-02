@@ -4,6 +4,7 @@ class Bullet {
   float x;
   float y;
   int can;
+
   Bullet() {
 
     velocity = new PVector(0, 0);
@@ -14,14 +15,18 @@ class Bullet {
   void call() {
     if (can == 0) {
 
-
-      velocity.x = mouseX - p.location.x;
-      velocity.y = mouseY - p.location.y;
+      if (w.weapon == 2) {
+        velocity.x = mouseX - p.location.x + random(-25, 25);
+        velocity.y = mouseY - p.location.y+ random(-25, 25);
+      }
+      if (w.weapon == 1) { 
+        velocity.x = mouseX - p.location.x + random(-15, 15);
+        velocity.y = mouseY - p.location.y+ random(-15, 15);
+      }
       velocity.normalize();
-      velocity.mult(10);
-
-      x = p.location.x + velocity.x*4;
-      y = p.location.y + velocity.y*4;
+      velocity.mult(20);
+      x = p.location.x + velocity.x*2;
+      y = p.location.y + velocity.y*2;
       can = 1;
     }
   }
@@ -46,4 +51,5 @@ class Bullet {
     stroke(255);
     ellipse(x, y, 2, 2);
   }
+
 }
