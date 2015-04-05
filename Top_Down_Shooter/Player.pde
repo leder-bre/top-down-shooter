@@ -155,6 +155,10 @@ class Player {
         w.shot=true;
         gunshot.play();
         i += 1;
+        w.recoil += 20;
+        if(w.weapon == 1) {
+         w.recoil += 50; 
+        }
       }
     }
   }

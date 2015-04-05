@@ -16,12 +16,12 @@ class Bullet {
     if (can == 0) {
 
       if (w.weapon == 2) {
-        velocity.x = mouseX - p.location.x + random(-25, 25);
-        velocity.y = mouseY - p.location.y+ random(-25, 25);
+        velocity.x = mouseX - p.location.x + random(-70*(150*distance/width), 70*(150*distance/width));
+        velocity.y = mouseY - p.location.y+ random(-70*(150*distance/width), 70*(150*distance/width));
       }
       if (w.weapon == 1) { 
-        velocity.x = mouseX - p.location.x + random(-15, 15);
-        velocity.y = mouseY - p.location.y+ random(-15, 15);
+        velocity.x = mouseX - p.location.x + random(-40*(150*distance/width), 40*(150*distance/width));
+        velocity.y = mouseY - p.location.y+ random(-40*(150*distance/width), 40*(150*distance/width));
       }
       velocity.normalize();
       velocity.mult(20);

@@ -2,6 +2,7 @@ class Weapons {
   int weapon = 1;
   int canShoot = 0;
   int fireRate = 0;
+  int recoil = 0;
   boolean shot = false;
   boolean shoot = true;
   /*
@@ -12,6 +13,10 @@ class Weapons {
    */
   void run() {
 
+    if (recoil > 0) {
+      recoil -= recoil/20;
+      recoil -= 2;
+    }
     if (weapon == 1) {
       canShoot = 0;
       fireRate = 0;

@@ -43,6 +43,7 @@ void draw() {
     accuracy = 1.5;
   }
   if (pause == false) {
+    distance += w.recoil/10;
     distance *= accuracy;
     //image(floor, 0, 0);
     background(100);
@@ -72,6 +73,7 @@ void draw() {
     p.display();
     w.run();
   }
+  println(w.recoil);
 }
 
 void mouseReleased() {
