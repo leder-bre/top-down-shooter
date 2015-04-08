@@ -1,7 +1,7 @@
 import processing.sound.*;
 Player p;
 Bullet bullets[] = new Bullet[1000000];
-Wall walls[] = new Wall[10];
+Wall walls[] = new Wall[20];
 Weapons w;
 boolean pause;
 float distance;
@@ -14,7 +14,7 @@ SoundFile gunshot;
 
 void setup() {
   smooth();
-  size(1100, 700);
+  size(1280, 700);
   // noCursor();
   floor = loadImage("floor.jpg");
   gunshot = new SoundFile(this, "gunshot.mp3");

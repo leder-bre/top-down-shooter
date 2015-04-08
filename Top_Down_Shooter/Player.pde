@@ -5,6 +5,10 @@ class Player {
   int count;
   PVector velocity;
   int bang;
+  int pun1 = 24;
+  int pun2 = 19;
+  boolean punch = false;
+  int puncher = 1;
 
   Player(float tempX, float tempY) {
     location = new PVector (0, 0);
@@ -24,7 +28,7 @@ class Player {
         velocity.x -= 2;
 
         for (int i = 0; i < walls.length; i++) {
-          if (location.x-2 > walls[i].x - walls[i].wide/2 && location.x-2 < walls[i].x + walls[i].wide/2 && location.y > walls[i].y - walls[i].high/2 && location.y < walls[i].y + walls[i].high/2) {
+          if (location.x-3 > walls[i].x - walls[i].wide/2 && location.x-3 < walls[i].x + walls[i].wide/2 && location.y > walls[i].y - walls[i].high/2 && location.y < walls[i].y + walls[i].high/2) {
             velocity.x += +2;
           }
         }
@@ -32,7 +36,7 @@ class Player {
       if (key == 'd') {
         velocity.x += 2;
         for (int i = 0; i < walls.length; i++) {
-          if (location.x+2 > walls[i].x - walls[i].wide/2 && location.x+2 < walls[i].x + walls[i].wide/2 && location.y > walls[i].y - walls[i].high/2 && location.y < walls[i].y + walls[i].high/2) {
+          if (location.x+3 > walls[i].x - walls[i].wide/2 && location.x+3 < walls[i].x + walls[i].wide/2 && location.y > walls[i].y - walls[i].high/2 && location.y < walls[i].y + walls[i].high/2) {
             velocity.x -= 2;
           }
         }
@@ -40,7 +44,7 @@ class Player {
       if (key == 'w') {
         velocity.y -= 2;
         for (int i = 0; i < walls.length; i++) {
-          if (location.x > walls[i].x - walls[i].wide/2 && location.x < walls[i].x + walls[i].wide/2 && location.y-2 > walls[i].y - walls[i].high/2 && location.y-2 < walls[i].y + walls[i].high/2) {
+          if (location.x > walls[i].x - walls[i].wide/2 && location.x < walls[i].x + walls[i].wide/2 && location.y-3 > walls[i].y - walls[i].high/2 && location.y-3 < walls[i].y + walls[i].high/2) {
             velocity.y += 2;
           }
         }
@@ -49,7 +53,7 @@ class Player {
         velocity.y += 2;
 
         for (int i = 0; i < walls.length; i++) {
-          if (location.x > walls[i].x - walls[i].wide/2 && location.x < walls[i].x + walls[i].wide/2 && location.y+2 > walls[i].y - walls[i].high/2 && location.y+2 < walls[i].y + walls[i].high/2) {
+          if (location.x > walls[i].x - walls[i].wide/2 && location.x < walls[i].x + walls[i].wide/2 && location.y+3 > walls[i].y - walls[i].high/2 && location.y+3 < walls[i].y + walls[i].high/2) {
             velocity.y -= 2;
           }
         }
@@ -63,7 +67,24 @@ class Player {
   }
 
   void display() {
+    // pun1 =24;
+    // pun2 = 19;
+    //pun1 turns 19
+    //pun2 turns 24
 
+    if (punch == true) {
+      if (pun1 == 19) {
+        puncher = -1;
+      }
+      pun1 -= puncher;
+      pun2 += puncher * 7;
+      if (pun1 == 24) {
+        punch = false;
+        puncher = 1;
+        pun1 = 24;
+        pun2 = 19;
+      }
+    }
 
     stroke(0);
     strokeWeight(1);
@@ -88,7 +109,7 @@ class Player {
       vertex(27, 5);
       vertex(29, 3);
       vertex(21, -5);
-      vertex(-3, -17);
+      vertex(-10, -17);
 
       endShape(CLOSE);
 
@@ -101,8 +122,7 @@ class Player {
       rect(50, 2, 14, 3);
 
       rect(38, 2, 15, 5);
-    }
-    if (w.weapon == 2) {
+    } else if (w.weapon == 2) {
       fill(210, 55, 55);
       beginShape();
       vertex(9, -21);
@@ -128,6 +148,28 @@ class Player {
       rect(45, 3, 30, 3);
 
       rect(30, 3, 25, 5);
+    } else {
+      fill(210, 55, 55);
+      beginShape();
+      vertex(2, -21);
+      vertex(20, -26 + pun2/4);
+      vertex(43-pun2/2, 0);
+      vertex(36-pun2/2, -1);
+      vertex(16, -17+ pun2/4);
+      vertex(7, -9);
+      endShape(CLOSE);
+      beginShape();
+      vertex(11, pun1 - 10);
+      vertex(14, pun1 - 10);
+      vertex(pun2, 1);
+      vertex(pun2 + 2, 12);
+      vertex(14, pun1);
+      vertex(-7, 19);
+
+      endShape(CLOSE);
+      fill(210, 200, 150);
+      ellipse(40 - pun2/2, 0, 11, 11);
+      ellipse(pun2 + 1, 6, 11, 11);
     }
 
     fill(210, 55, 55);
@@ -139,8 +181,12 @@ class Player {
 
     if (bang > 0) {
       noStroke();
-      fill(255, 0, 0, bang);
-      ellipse(55, 0, bang/10-5, bang/10-5);
+      fill(255, 200, 200, bang/4);
+      ellipse(57, 2, bang/10-5, bang/10-5);
+      fill(255, 80, 20, bang);
+      ellipse(57, 2, bang/10-10, bang/10-10);
+      fill(255, 0, 0, bang/2);
+      ellipse(57, 2, bang/12-10, bang/12-10);
       bang -= 30;
     }
 
@@ -149,15 +195,22 @@ class Player {
 
   void shoot() {
     if (mousePressed) {
-      if (w.canShoot <= 0 && w.shot == false) {
-        bang = 255;
-        w.canShoot = w.fireRate;
-        w.shot=true;
-        gunshot.play();
-        i += 1;
-        w.recoil += 20;
-        if(w.weapon == 1) {
-         w.recoil += 50; 
+      if (w.weapon == 3) {
+        if (punch == false) {
+          punch = true;
+        }
+      }
+      if (w.weapon != 3) {
+        if (w.canShoot <= 0 && w.shot == false) {
+          bang = 255;
+          w.canShoot = w.fireRate;
+          w.shot=true;
+          gunshot.play();
+          i += 1;
+          w.recoil += 20;
+          if (w.weapon == 1) {
+            w.recoil += 50;
+          }
         }
       }
     }

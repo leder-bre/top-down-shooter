@@ -9,7 +9,7 @@ class Weapons {
   Weapon
    1  = Pistol
    2 = AR
-   3 = Shotgun
+   3 = Melee
    */
   void run() {
 
