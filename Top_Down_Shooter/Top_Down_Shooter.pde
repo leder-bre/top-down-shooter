@@ -6,8 +6,8 @@ Weapons w;
 boolean pause;
 float distance;
 float accuracy;
-PImage floor;
 SoundFile gunshot;
+SoundFile knife;
 
 
 //Serial myPort;
@@ -16,8 +16,8 @@ void setup() {
   smooth();
   size(1280, 700);
   // noCursor();
-  floor = loadImage("floor.jpg");
   gunshot = new SoundFile(this, "gunshot.mp3");
+  knife = new SoundFile(this, "knife.mp3");
   p = new Player(width/2, height/2);
   w = new Weapons();
   for (int q = 0; q < bullets.length; q++) {

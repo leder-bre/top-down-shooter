@@ -170,6 +170,18 @@ class Player {
       fill(210, 200, 150);
       ellipse(40 - pun2/2, 0, 11, 11);
       ellipse(pun2 + 1, 6, 11, 11);
+      fill(100, 100, 100);
+      pushMatrix();
+      translate(pun2 + 1, 4);
+      rotate(pun2/14+20.7);
+      rect(0, 0, 5, 15);
+       fill(200, 200, 200);
+       noStroke();
+      rect(0, 11, 5, 11);
+      triangle(-2, 16, 3, 14, 2, 22);
+      strokeWeight(1);
+      stroke(0);
+      popMatrix();
     }
 
     fill(210, 55, 55);
@@ -198,6 +210,7 @@ class Player {
       if (w.weapon == 3) {
         if (punch == false) {
           punch = true;
+          knife.play();
         }
       }
       if (w.weapon != 3) {
