@@ -3,10 +3,11 @@ Player p;
 Bullet bullets[] = new Bullet[1000000];
 Wall walls[] = new Wall[40];
 Weapons w;
-Zombie z[] = new Zombie[30];
+Zombie z[] = new Zombie[20];
 boolean pause;
 float distance;
 float accuracy;
+PVector looking;
 SoundFile gunshot;
 SoundFile knife;
 
@@ -16,6 +17,7 @@ void setup() {
   smooth();
   size(1280, 700);
   // noCursor();
+  looking = new PVector(0, 0);
   gunshot = new SoundFile(this, "gunshot.mp3");
   knife = new SoundFile(this, "knife.mp3");
   p = new Player(width/2, height/2);
@@ -31,16 +33,29 @@ void setup() {
   walls[2]= new Wall(width/2, height-5, width, 10);
   walls[3]= new Wall(width-5, height/2, 10, height);
   for (int y = 4; y < walls.length; y++) {
-    walls[y] = new Wall(random(0, width), random(0, height), random(0, width/10), random(0, height/10));
+    walls[y] = new Wall(random(0, width), random(0, height), random(width/40, width/10), random(height/40, height/10));
   }
   rectMode(CENTER);
   for (int q = 0; q < z.length; q++) {
     z[q].spawn();
   }
+  w.mammo = 40;
+  w.pammo = 15;
 }
 
 void draw() {
-
+  looking.x=mouseX - p.location.x;
+ looking.y=mouseY - p.location.y;
+ looking.normalize();
+ looking.mult(45);
+ 
+ if(w.weapon == 3 && w.knife<50 && w.canknife == true) {
+  bullets[0].x = p.location.x + looking.x;
+  bullets[0].y = p.location.y + looking.y;
+ } else {
+  bullets[0].x = -99; 
+ }
+ 
   distance = sqrt(((mouseX - p.location.x)*(mouseX - p.location.x))+((mouseY - p.location.y)*(mouseY - p.location.y)))/(width/4);
   if (w.weapon == 1) {
     accuracy = 0.5;
@@ -61,7 +76,7 @@ void draw() {
     line(mouseX, mouseY - 10* distance, mouseX, mouseY - 15* distance);
     p.count -= 1;
 
-    for (int q = 0; q < p.i; q++) {
+    for (int q = 1; q < p.i; q++) {
       bullets[q].call();
       if (bullets[q].x > -100 && bullets[q].x < width+100 && bullets[q].y > -100 && bullets[q].y < height +100) {
         bullets[q].move();
@@ -71,9 +86,11 @@ void draw() {
     }
 
     for (int q = 0; q < z.length; q++) {
-      z[q].move();
-      z[q].display();
-      z[q].attack();
+      if (z[q].x > 0 && z[q].x < width && z[q].y > 0 && z[q].y < height) {
+        z[q].move();
+        z[q].display();
+        z[q].attack();
+      }
     }
 
     for (int u = 0; u < walls.length; u++) {
@@ -100,6 +117,22 @@ void keyPressed() {
       pause = true;
     }
   }
+  
+  if(key == 'a') {
+   p.velocity.x = -2; 
+  }
+  
+  if(key == 'd') {
+   p.velocity.x = +2; 
+  }
+  
+  if(key == 'w') {
+   p.velocity.y = -2; 
+  }
+  
+  if(key == 's') {
+   p.velocity.y = +2; 
+  }
 
   if (key == '1') {
     w.weapon = 1;
@@ -111,4 +144,24 @@ void keyPressed() {
   if (key == '3') {
     w.weapon = 3;
   }
+}
+
+void keyReleased() {
+  if(key == 'a') {
+   p.velocity.x = 0; 
+  }
+  
+  if(key == 'd') {
+   p.velocity.x = 0; 
+  }
+  
+  if(key == 'w') {
+   p.velocity.y = 0; 
+  }
+  
+  if(key == 's') {
+   p.velocity.y = 0; 
+  }
+  
+  
 }

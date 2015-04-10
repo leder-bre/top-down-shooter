@@ -1,6 +1,7 @@
 class Player {
   PVector location;
   float ammo;
+  int health = 300;
   int i;
   int count;
   PVector velocity;
@@ -24,46 +25,58 @@ class Player {
     //  for (int i = 0; i < walls.length; i++) { 
 
     if (keyPressed) {
-      if (key == 'a') {
-        velocity.x -= 2;
-
-        for (int i = 0; i < walls.length; i++) {
-          if (location.x-3 > walls[i].x - walls[i].wide/2 && location.x-3 < walls[i].x + walls[i].wide/2 && location.y > walls[i].y - walls[i].high/2 && location.y < walls[i].y + walls[i].high/2) {
-            velocity.x += +2;
-          }
+      if (key == 'r') {
+        if (w.weapon == 1) { 
+          w.pammo = 15;
         }
-      }
-      if (key == 'd') {
-        velocity.x += 2;
-        for (int i = 0; i < walls.length; i++) {
-          if (location.x+3 > walls[i].x - walls[i].wide/2 && location.x+3 < walls[i].x + walls[i].wide/2 && location.y > walls[i].y - walls[i].high/2 && location.y < walls[i].y + walls[i].high/2) {
-            velocity.x -= 2;
-          }
-        }
-      }
-      if (key == 'w') {
-        velocity.y -= 2;
-        for (int i = 0; i < walls.length; i++) {
-          if (location.x > walls[i].x - walls[i].wide/2 && location.x < walls[i].x + walls[i].wide/2 && location.y-3 > walls[i].y - walls[i].high/2 && location.y-3 < walls[i].y + walls[i].high/2) {
-            velocity.y += 2;
-          }
-        }
-      }
-      if (key == 's') {
-        velocity.y += 2;
-
-        for (int i = 0; i < walls.length; i++) {
-          if (location.x > walls[i].x - walls[i].wide/2 && location.x < walls[i].x + walls[i].wide/2 && location.y+3 > walls[i].y - walls[i].high/2 && location.y+3 < walls[i].y + walls[i].high/2) {
-            velocity.y -= 2;
-          }
+        if (w.weapon == 2) {
+          w.mammo = 40;
         }
       }
     }
+
+  /*
+    for (int i = 0; i < walls.length; i++) {
+      if (location.x-3 > walls[i].x - walls[i].wide/2 && location.x-3 < walls[i].x + walls[i].wide/2 && location.y > walls[i].y - walls[i].high/2 && location.y < walls[i].y + walls[i].high/2) {
+        velocity.x = 0;
+      }
+    }
+
+
+    for (int i = 0; i < walls.length; i++) {
+      if (location.x+3 > walls[i].x - walls[i].wide/2 && location.x+3 < walls[i].x + walls[i].wide/2 && location.y > walls[i].y - walls[i].high/2 && location.y < walls[i].y + walls[i].high/2) {
+        velocity.x = 0;
+      }
+    }
+
+
+    for (int i = 0; i < walls.length; i++) {
+      if (location.x > walls[i].x - walls[i].wide/2 && location.x < walls[i].x + walls[i].wide/2 && location.y-3 > walls[i].y - walls[i].high/2 && location.y-3 < walls[i].y + walls[i].high/2) {
+        velocity.y = 0;
+      }
+    }
+
+
+
+    for (int i = 0; i < walls.length; i++) {
+      if (location.x > walls[i].x - walls[i].wide/2 && location.x < walls[i].x + walls[i].wide/2 && location.y+3 > walls[i].y - walls[i].high/2 && location.y+3 < walls[i].y + walls[i].high/2) {
+        velocity.y = 0;
+      }
+    }
+    */
+    
+    for (int i = 0; i < walls.length; i++) {
+      if (location.x > walls[i].x - walls[i].wide/2 && location.x < walls[i].x + walls[i].wide/2 && location.y+velocity.y > walls[i].y - walls[i].high/2 && location.y+velocity.y < walls[i].y + walls[i].high/2) {
+        velocity.y = 0;
+      }
+      if (location.x+velocity.x > walls[i].x - walls[i].wide/2 && location.x+velocity.x < walls[i].x + walls[i].wide/2 && location.y > walls[i].y - walls[i].high/2 && location.y < walls[i].y + walls[i].high/2) {
+        velocity.x = 0;
+      }
+    }
+    
     velocity.normalize();
     velocity.mult(3);
     location.add(velocity);
-    velocity.mult(0);
-    //}
   }
 
   void display() {
@@ -171,8 +184,8 @@ class Player {
       translate(pun2 + 1, 4);
       rotate(pun2/14+20.7);
       rect(0, 0, 5, 15);
-       fill(200, 200, 200);
-       noStroke();
+      fill(200, 200, 200);
+      noStroke();
       rect(0, 11, 5, 11);
       triangle(-2, 16, 3, 14, 2, 22);
       strokeWeight(1);
@@ -199,27 +212,42 @@ class Player {
     }
 
     popMatrix();
+    
+      stroke(255);
+      fill(40, 80, 80, 150);
+      rect(170, height -30, 300, 28, 3);
+      fill(255, 0, 0, 200);
+      noStroke();
+      rect(21 + health/2, height -30, health - 1, 26, 3);
+    
   }
 
   void shoot() {
+
     if (mousePressed) {
-      if (w.weapon == 3) {
+      if (w.weapon == 3 && w.knife == 200) {
         if (punch == false && w.shot == false) {
           punch = true;
           knife.play();
           w.shot = true;
+          w.knife = 0;
         }
       }
       if (w.weapon != 3) {
         if (w.canShoot <= 0 && w.shot == false) {
-          bang = 255;
-          w.canShoot = w.fireRate;
-          w.shot=true;
-          gunshot.play();
-          i += 1;
-          w.recoil += 20;
-          if (w.weapon == 1) {
-            w.recoil += 50;
+          if (w.weapon == 1 && w.pammo > 0 || w.weapon == 2 && w.mammo > 0) {
+            bang = 255;
+            w.canShoot = w.fireRate;
+            w.shot=true;
+            gunshot.play();
+            i += 1;
+            w.recoil += 20;
+            if (w.weapon == 1) {
+              w.recoil += 50;
+              w.pammo -= 1;
+            } else {
+              w.mammo -= 1;
+            }
           }
         }
       }
