@@ -67,10 +67,6 @@ class Player {
   }
 
   void display() {
-    // pun1 =24;
-    // pun2 = 19;
-    //pun1 turns 19
-    //pun2 turns 24
 
     if (punch == true) {
       if (pun1 == 19) {
@@ -208,9 +204,10 @@ class Player {
   void shoot() {
     if (mousePressed) {
       if (w.weapon == 3) {
-        if (punch == false) {
+        if (punch == false && w.shot == false) {
           punch = true;
           knife.play();
+          w.shot = true;
         }
       }
       if (w.weapon != 3) {

@@ -31,7 +31,7 @@ class Weapons {
     }
 
     if (weapon == 3) {
-      fireRate = 100;
+      fireRate = 10;
       if (canShoot > 0) {
         canShoot -= 1;
       }

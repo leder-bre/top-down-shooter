@@ -1,14 +1,14 @@
 import processing.sound.*;
 Player p;
 Bullet bullets[] = new Bullet[1000000];
-Wall walls[] = new Wall[20];
+Wall walls[] = new Wall[40];
 Weapons w;
+Zombie z[] = new Zombie[30];
 boolean pause;
 float distance;
 float accuracy;
 SoundFile gunshot;
 SoundFile knife;
-
 
 //Serial myPort;
 
@@ -20,6 +20,9 @@ void setup() {
   knife = new SoundFile(this, "knife.mp3");
   p = new Player(width/2, height/2);
   w = new Weapons();
+  for (int q = 0; q < z.length; q++) {
+    z[q] = new Zombie();
+  }
   for (int q = 0; q < bullets.length; q++) {
     bullets[q] = new Bullet();
   }
@@ -31,6 +34,9 @@ void setup() {
     walls[y] = new Wall(random(0, width), random(0, height), random(0, width/10), random(0, height/10));
   }
   rectMode(CENTER);
+  for (int q = 0; q < z.length; q++) {
+    z[q].spawn();
+  }
 }
 
 void draw() {
@@ -64,6 +70,12 @@ void draw() {
       }
     }
 
+    for (int q = 0; q < z.length; q++) {
+      z[q].move();
+      z[q].display();
+      z[q].attack();
+    }
+
     for (int u = 0; u < walls.length; u++) {
       walls[u].display();
     }
@@ -73,7 +85,6 @@ void draw() {
     p.display();
     w.run();
   }
-  println(w.recoil);
 }
 
 void mouseReleased() {
