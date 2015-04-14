@@ -1,3 +1,4 @@
+
 class Player {
   PVector location;
   float ammo;
@@ -10,8 +11,10 @@ class Player {
   int pun2 = 19;
   boolean punch = false;
   int puncher = 1;
+  PFont fontext;
 
   Player(float tempX, float tempY) {
+    fontext = createFont("SukhumvitSet-Light", 100);
     location = new PVector (0, 0);
     velocity = new PVector (0, 0);
     location.x = tempX;
@@ -67,10 +70,10 @@ class Player {
     
     for (int i = 0; i < walls.length; i++) {
       if (location.x > walls[i].x - walls[i].wide/2 && location.x < walls[i].x + walls[i].wide/2 && location.y+velocity.y > walls[i].y - walls[i].high/2 && location.y+velocity.y < walls[i].y + walls[i].high/2) {
-        velocity.y = 0;
+        location.y-=velocity.y * 2;
       }
       if (location.x+velocity.x > walls[i].x - walls[i].wide/2 && location.x+velocity.x < walls[i].x + walls[i].wide/2 && location.y > walls[i].y - walls[i].high/2 && location.y < walls[i].y + walls[i].high/2) {
-        velocity.x = 0;
+        location.x-=velocity.x * 2;
       }
     }
     
@@ -219,6 +222,9 @@ class Player {
       fill(255, 0, 0, 200);
       noStroke();
       rect(21 + health/2, height -30, health - 1, 26, 3);
+      fill(0);
+      textFont(fontext, 20);
+      text("Health: " + health/3 + "/100", 100, height-23);
     
   }
 
@@ -243,7 +249,7 @@ class Player {
             i += 1;
             w.recoil += 20;
             if (w.weapon == 1) {
-              w.recoil += 50;
+              w.recoil += 20;
               w.pammo -= 1;
             } else {
               w.mammo -= 1;

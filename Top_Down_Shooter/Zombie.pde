@@ -10,8 +10,11 @@ class Zombie {
   float spotx;
   float spoty;
   PVector movement;
+  int health = 100;
+  int attack = 0;
 
   void spawn() {
+    health = 100;
     seen = 0;
     looking = 0;
     int chooser = int(random(100));
@@ -40,9 +43,19 @@ class Zombie {
   void move() {
 
     if (seen == -180) {
-      seen = 0;
-      xspeed = 1;
-      yspeed = 1;
+      seen = 0;  
+      int choose = int(random(10));
+      int pick = int(random(10));
+      if (pick % 2 == 0) {
+        xspeed = 1;
+      } else {
+        xspeed = -1;
+      }
+      if (choose % 2 == 0) {
+        yspeed = 1;
+      } else {
+        yspeed = -1;
+      }
     }
 
 
@@ -50,9 +63,9 @@ class Zombie {
 
     println(seen);
     if (frameCount % 10 == 0) {
-     
 
-      if (dist(x, y, p.location.x, p.location.y) < 400) {
+
+      if (dist(x, y, p.location.x, p.location.y) < 600) {
         seen = 30;
         xlook= (p.location.x - x) / 50;
         ylook= (p.location.y - y) / 50;
@@ -80,7 +93,7 @@ class Zombie {
       }
     }
     for (int i = 0; i < walls.length; i++) {
-       if (frameCount % 100 == 0 && x > walls[i].x - walls[i].wide/2 && x < walls[i].x + walls[i].wide/2 && y > walls[i].y - walls[i].high/2 && y < walls[i].y + walls[i].high/2) {
+      if (frameCount % 100 == 0 && x > walls[i].x - walls[i].wide/2 && x < walls[i].x + walls[i].wide/2 && y > walls[i].y - walls[i].high/2 && y < walls[i].y + walls[i].high/2) {
         spawn();
       }
       if (x > walls[i].x - walls[i].wide/2 && x < walls[i].x + walls[i].wide/2 && y+yspeed > walls[i].y - walls[i].high/2 && y+yspeed < walls[i].y + walls[i].high/2) {
@@ -91,14 +104,20 @@ class Zombie {
         xspeed = xspeed * -1;
       }
     }
+  }
 
+  void walk() {
     x+=xspeed;
     y+=yspeed;
   }
+
   void display() {
+    if (attack > 0) {
+      attack -= 1;
+    }
     pushMatrix();
     translate(x, y);
-    rotate(atan2((y + yspeed)-y, (x + xspeed)-x));
+    rotate(atan2((y + yspeed - attack)-y, (x + xspeed + attack)-x ));
     strokeWeight(2);
     stroke(0);
     fill(30, 55, 42);
@@ -110,25 +129,40 @@ class Zombie {
     ellipse(30, -20, 15, 15);
     ellipse(30, 20, 15, 15);
     popMatrix();
+    fill(255, 0, 0, 100);
+    rect(x, y - 50, health, 10);
   }
   //dank
   void attack() {
     for (int q = 0; q < p.i; q++) {
       if (dist(bullets[q].x, bullets[q].y, x, y) < 20) {
-        spawn();
-        if(q == 0) {
-         w.canknife = false; 
+
+
+        if (q == 0) {
+          w.canknife = false;
         }
         bullets[q].x = -100;
-        x = -100;
-        
+        if (w.weapon == 1) {
+          health-=40;
+        } else if (w.weapon == 2) {
+          health -= 25;
+        } else {
+          health -= 55;
+        }
+        if (health <= 0) {
+          x = -100;
+        }
       }
     }//so dank
     if (dist(p.location.x, p.location.y, x, y) < 20) {
-      p.location.x = width/2;
-      p.location.y = height/2;
-      p.health -= 40;
-      spawn();
+      movement.x = 0;
+      movement.y = 0;
+      xspeed = 0;
+      yspeed = 0;
+      if (attack == 0) {
+        p.health -= 40;
+        attack = 40;
+      }
     }
   }//how dank?
 }

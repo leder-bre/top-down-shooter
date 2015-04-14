@@ -1,4 +1,3 @@
-
 class Wall {
   float x;
   float y;

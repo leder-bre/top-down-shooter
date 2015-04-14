@@ -3,7 +3,7 @@ Player p;
 Bullet bullets[] = new Bullet[1000000];
 Wall walls[] = new Wall[40];
 Weapons w;
-Zombie z[] = new Zombie[20];
+Zombie z[] = new Zombie[2];
 boolean pause;
 float distance;
 float accuracy;
@@ -11,12 +11,9 @@ PVector looking;
 SoundFile gunshot;
 SoundFile knife;
 
-//Serial myPort;
-
 void setup() {
   smooth();
   size(1280, 700);
-  // noCursor();
   looking = new PVector(0, 0);
   gunshot = new SoundFile(this, "gunshot.mp3");
   knife = new SoundFile(this, "knife.mp3");
@@ -44,18 +41,20 @@ void setup() {
 }
 
 void draw() {
+
   looking.x=mouseX - p.location.x;
- looking.y=mouseY - p.location.y;
- looking.normalize();
- looking.mult(45);
- 
- if(w.weapon == 3 && w.knife<50 && w.canknife == true) {
-  bullets[0].x = p.location.x + looking.x;
-  bullets[0].y = p.location.y + looking.y;
- } else {
-  bullets[0].x = -99; 
- }
- 
+  looking.y=mouseY - p.location.y;
+  looking.normalize();
+
+  if (w.weapon == 3 && w.knife<50 && w.canknife == true) {
+    for (int i = -5; i < 60; i++) {
+      bullets[0].x = p.location.x + looking.x * i;
+      bullets[0].y = p.location.y + looking.y * i;
+    }
+  } else {
+    bullets[0].x = -99;
+  }
+
   distance = sqrt(((mouseX - p.location.x)*(mouseX - p.location.x))+((mouseY - p.location.y)*(mouseY - p.location.y)))/(width/4);
   if (w.weapon == 1) {
     accuracy = 0.5;
@@ -64,9 +63,14 @@ void draw() {
     accuracy = 1.5;
   }
   if (pause == false) {
-    distance += w.recoil/10;
-    distance *= accuracy;
-    //image(floor, 0, 0);
+
+    if (w.recoil > 10) {
+      distance *= w.recoil/10;
+      distance *= accuracy;
+    } else {
+      distance += w.recoil/20;
+      distance *= accuracy;
+    }
     background(100);
     stroke(255);
     strokeWeight(2);
@@ -86,10 +90,11 @@ void draw() {
     }
 
     for (int q = 0; q < z.length; q++) {
-      if (z[q].x > 0 && z[q].x < width && z[q].y > 0 && z[q].y < height) {
+      if (z[q].x > 0 && z[q].x < width && z[q].y > 0 && z[q].y < height) {   
         z[q].move();
         z[q].display();
         z[q].attack();
+        z[q].walk();
       }
     }
 
@@ -101,6 +106,7 @@ void draw() {
     p.shoot();
     p.display();
     w.run();
+    bullets[1].display();
   }
 }
 
@@ -117,21 +123,21 @@ void keyPressed() {
       pause = true;
     }
   }
-  
-  if(key == 'a') {
-   p.velocity.x = -2; 
+
+  if (key == 'a') {
+    p.velocity.x = -2;
   }
-  
-  if(key == 'd') {
-   p.velocity.x = +2; 
+
+  if (key == 'd') {
+    p.velocity.x = +2;
   }
-  
-  if(key == 'w') {
-   p.velocity.y = -2; 
+
+  if (key == 'w') {
+    p.velocity.y = -2;
   }
-  
-  if(key == 's') {
-   p.velocity.y = +2; 
+
+  if (key == 's') {
+    p.velocity.y = +2;
   }
 
   if (key == '1') {
@@ -147,21 +153,19 @@ void keyPressed() {
 }
 
 void keyReleased() {
-  if(key == 'a') {
-   p.velocity.x = 0; 
+  if (key == 'a') {
+    p.velocity.x = 0;
   }
-  
-  if(key == 'd') {
-   p.velocity.x = 0; 
+
+  if (key == 'd') {
+    p.velocity.x = 0;
   }
-  
-  if(key == 'w') {
-   p.velocity.y = 0; 
+
+  if (key == 'w') {
+    p.velocity.y = 0;
   }
-  
-  if(key == 's') {
-   p.velocity.y = 0; 
+
+  if (key == 's') {
+    p.velocity.y = 0;
   }
-  
-  
 }

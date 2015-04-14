@@ -15,16 +15,20 @@ class Bullet {
   void call() {
     if (can == 0) {
 
-      if (w.weapon == 2) {
-        velocity.x = mouseX - p.location.x + random(-70*(150*distance/width), 70*(150*distance/width));
-        velocity.y = mouseY - p.location.y+ random(-70*(150*distance/width), 70*(150*distance/width));
-      }
-      if (w.weapon == 1) { 
-        velocity.x = mouseX - p.location.x + random(-40*(150*distance/width), 40*(150*distance/width));
-        velocity.y = mouseY - p.location.y+ random(-40*(150*distance/width), 40*(150*distance/width));
-      }
+      velocity.x = mouseX - p.location.x;
+      velocity.y = mouseY - p.location.y;
       velocity.normalize();
       velocity.mult(20);
+
+      if (w.weapon == 2) {
+        velocity.x = velocity.x + random(-0.7 * w.recoil/15, 0.7 * w.recoil/15);
+        velocity.y = velocity.y+ random(-0.7 * w.recoil/15, 0.7 * w.recoil/15);
+      }
+      if (w.weapon == 1) { 
+        velocity.x = velocity.x + random(-1 * w.recoil/45, 1 * w.recoil/45);
+        velocity.y = velocity.y+ random(-1 * w.recoil/45, 1 * w.recoil/45);
+      }
+
       x = p.location.x + velocity.x*2;
       y = p.location.y + velocity.y*2;
       can = 1;
@@ -51,5 +55,4 @@ class Bullet {
     stroke(255);
     ellipse(x, y, 2, 2);
   }
-
 }

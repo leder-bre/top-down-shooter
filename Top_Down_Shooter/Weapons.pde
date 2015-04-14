@@ -18,7 +18,7 @@ class Weapons {
   void run() {
 
     if (recoil > 0) {
-      recoil -= recoil/20;
+      recoil -= recoil/40;
       recoil -= 2;
     }
     if (weapon == 1) {
@@ -41,6 +41,9 @@ class Weapons {
       }
     }
     if (weapon == 1) {
+      stroke(0, 40);
+      fill(140, 140, 140, 150);
+      rect(width-186, height -25, 341, 29, 3);
       for (int p = 0; p < 15; p++) {
         fill(140, 140, 40, 150);
         stroke(70, 70, 20, 200);
@@ -53,6 +56,9 @@ class Weapons {
       }
     }
     if (weapon == 2) {
+      stroke(0, 40);
+      fill(140, 140, 140, 150);
+      rect(width-214, height -25, 396, 30, 3);
       for (int p = 0; p < 40; p++) {
         fill(140, 140, 40, 150);
         stroke(70, 70, 20, 200);
@@ -79,6 +85,15 @@ class Weapons {
       rect(width - 120, height - 30, 200, 28, 3);
       fill(200, 200, 90, 200);
       rect(width - 20 - knife/2, height - 30, knife, 28, 3);
+    }
+
+    textFont(p.fontext, 20);
+    fill(0);
+    if (weapon == 1) {
+      text("Ammo: " + pammo + "/15", width-250, height-20);
+    }
+    if (weapon == 2) {
+      text("Ammo: " + mammo + "/40", width-268, height-20);
     }
   }
 }
