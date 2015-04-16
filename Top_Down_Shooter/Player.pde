@@ -1,4 +1,3 @@
-
 class Player {
   PVector location;
   float ammo;
@@ -33,7 +32,7 @@ class Player {
           w.pammo = 15;
         }
         if (w.weapon == 2) {
-          w.mammo = 40;
+          w.mammo = 30;
         }
       }
     }
@@ -70,10 +69,10 @@ class Player {
     
     for (int i = 0; i < walls.length; i++) {
       if (location.x > walls[i].x - walls[i].wide/2 && location.x < walls[i].x + walls[i].wide/2 && location.y+velocity.y > walls[i].y - walls[i].high/2 && location.y+velocity.y < walls[i].y + walls[i].high/2) {
-        location.y-=velocity.y * 2;
+        location.y-=velocity.y * 1.5;
       }
       if (location.x+velocity.x > walls[i].x - walls[i].wide/2 && location.x+velocity.x < walls[i].x + walls[i].wide/2 && location.y > walls[i].y - walls[i].high/2 && location.y < walls[i].y + walls[i].high/2) {
-        location.x-=velocity.x * 2;
+        location.x-=velocity.x * 1.5;
       }
     }
     
@@ -156,10 +155,13 @@ class Player {
       ellipse(23, 3, 12, 10);
       ellipse(36, 3, 9, 8);
       fill(200, 220, 220);
-
-      rect(45, 3, 30, 3);
-
-      rect(30, 3, 25, 5);
+      fill(10);
+      rect(43, 4, 30, 3);
+      fill(165, 75, 15);
+      rect(39, 4, 22, 4);
+      triangle(-6, 15, 3, 3, 31, 4);
+      fill(10);
+      rect(30, 4, 25, 5);
     } else {
       fill(210, 55, 55);
       beginShape();
@@ -218,13 +220,13 @@ class Player {
     
       stroke(255);
       fill(40, 80, 80, 150);
-      rect(170, height -30, 300, 28, 3);
+      rect(width-172, height -66, 300, 28, 3);
       fill(255, 0, 0, 200);
       noStroke();
-      rect(21 + health/2, height -30, health - 1, 26, 3);
+      rect(width - 21 - health/2, height -66, health - 1, 26, 3);
       fill(0);
       textFont(fontext, 20);
-      text("Health: " + health/3 + "/100", 100, height-23);
+      text("Health: " + health/3 + "/100", width-250, height-60);
     
   }
 

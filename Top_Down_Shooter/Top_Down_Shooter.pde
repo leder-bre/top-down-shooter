@@ -3,7 +3,7 @@ Player p;
 Bullet bullets[] = new Bullet[1000000];
 Wall walls[] = new Wall[40];
 Weapons w;
-Zombie z[] = new Zombie[2];
+Zombie z[] = new Zombie[20];
 boolean pause;
 float distance;
 float accuracy;
@@ -36,7 +36,7 @@ void setup() {
   for (int q = 0; q < z.length; q++) {
     z[q].spawn();
   }
-  w.mammo = 40;
+  w.mammo = 30;
   w.pammo = 15;
 }
 
@@ -47,7 +47,7 @@ void draw() {
   looking.normalize();
 
   if (w.weapon == 3 && w.knife<50 && w.canknife == true) {
-    for (int i = -5; i < 60; i++) {
+    for (int i = -20; i < 60; i++) {
       bullets[0].x = p.location.x + looking.x * i;
       bullets[0].y = p.location.y + looking.y * i;
     }
@@ -90,7 +90,7 @@ void draw() {
     }
 
     for (int q = 0; q < z.length; q++) {
-      if (z[q].x > 0 && z[q].x < width && z[q].y > 0 && z[q].y < height) {   
+      if (z[q].x > 0) {   
         z[q].move();
         z[q].display();
         z[q].attack();
