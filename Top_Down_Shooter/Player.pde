@@ -69,10 +69,10 @@ class Player {
     
     for (int i = 0; i < walls.length; i++) {
       if (location.x > walls[i].x - walls[i].wide/2 && location.x < walls[i].x + walls[i].wide/2 && location.y+velocity.y > walls[i].y - walls[i].high/2 && location.y+velocity.y < walls[i].y + walls[i].high/2) {
-        location.y-=velocity.y * 1.5;
+        location.y-=velocity.y * 1.1;
       }
       if (location.x+velocity.x > walls[i].x - walls[i].wide/2 && location.x+velocity.x < walls[i].x + walls[i].wide/2 && location.y > walls[i].y - walls[i].high/2 && location.y < walls[i].y + walls[i].high/2) {
-        location.x-=velocity.x * 1.5;
+        location.x-=velocity.x * 1.1;
       }
     }
     
@@ -220,13 +220,13 @@ class Player {
     
       stroke(255);
       fill(40, 80, 80, 150);
-      rect(width-172, height -66, 300, 28, 3);
+      rect(width-172, height -50, 300, 28, 3);
       fill(255, 0, 0, 200);
       noStroke();
-      rect(width - 21 - health/2, height -66, health - 1, 26, 3);
+      rect(width - 21 - health/2, height -50, health - 1, 26, 3);
       fill(0);
       textFont(fontext, 20);
-      text("Health: " + health/3 + "/100", width-250, height-60);
+      text("Health: " + health/3 + "/100", width-250, height-43);
     
   }
 

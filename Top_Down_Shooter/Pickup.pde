@@ -1,3 +1,6 @@
+
+//Class under progress - Currently unused
+
 class Pickup {
   int ax;
   int ay;

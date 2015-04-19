@@ -1,9 +1,9 @@
 import processing.sound.*;
 Player p;
 Bullet bullets[] = new Bullet[1000000];
-Wall walls[] = new Wall[40];
+Wall walls[] = new Wall[80];
 Weapons w;
-Zombie z[] = new Zombie[20];
+Zombie z[] = new Zombie[30];
 boolean pause;
 float distance;
 float accuracy;
@@ -13,7 +13,7 @@ SoundFile knife;
 
 void setup() {
   smooth();
-  size(1280, 700);
+  size(1280, 750);
   looking = new PVector(0, 0);
   gunshot = new SoundFile(this, "gunshot.mp3");
   knife = new SoundFile(this, "knife.mp3");
@@ -27,7 +27,7 @@ void setup() {
   }
   walls[0]= new Wall(width/2, 5, width, 10);
   walls[1]= new Wall(5, height/2, 10, height);
-  walls[2]= new Wall(width/2, height-5, width, 10);
+  walls[2]= new Wall(width/2, height-45, width, 90);
   walls[3]= new Wall(width-5, height/2, 10, height);
   for (int y = 4; y < walls.length; y++) {
     walls[y] = new Wall(random(0, width), random(0, height), random(width/40, width/10), random(height/40, height/10));
@@ -58,9 +58,10 @@ void draw() {
   distance = sqrt(((mouseX - p.location.x)*(mouseX - p.location.x))+((mouseY - p.location.y)*(mouseY - p.location.y)))/(width/4);
   if (w.weapon == 1) {
     accuracy = 0.5;
-  }
-  if (w.weapon == 2) {
+  } else if (w.weapon == 2) {
     accuracy = 1.5;
+  } else {
+    accuracy = 0.2;
   }
   if (pause == false) {
 
@@ -101,6 +102,8 @@ void draw() {
     for (int u = 0; u < walls.length; u++) {
       walls[u].display();
     }
+    fill(200);
+    rect(width/2, height - 40, width, 80);
 
     p.move();
     p.shoot();
@@ -167,5 +170,10 @@ void keyReleased() {
 
   if (key == 's') {
     p.velocity.y = 0;
+  }
+  if (key == 'p') {
+    for (int q = 0; q < z.length; q++) {
+      z[q].spawn();
+    }
   }
 }

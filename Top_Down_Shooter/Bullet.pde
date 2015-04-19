@@ -3,7 +3,7 @@ class Bullet {
   PVector velocity;
   float x;
   float y;
-  int can;
+  int spawn;
 
   Bullet() {
 
@@ -13,7 +13,7 @@ class Bullet {
   }
 
   void call() {
-    if (can == 0) {
+    if (spawn == 0) {
 
       velocity.x = mouseX - p.location.x;
       velocity.y = mouseY - p.location.y;
@@ -21,17 +21,17 @@ class Bullet {
       velocity.mult(20);
 
       if (w.weapon == 2) {
-        velocity.x = velocity.x + random(-0.7 * w.recoil/15, 0.7 * w.recoil/15);
-        velocity.y = velocity.y+ random(-0.7 * w.recoil/15, 0.7 * w.recoil/15);
+        velocity.x = velocity.x + random(-0.8 * w.recoil/15, 0.8 * w.recoil/15);
+        velocity.y = velocity.y+ random(-0.8 * w.recoil/15, 0.8 * w.recoil/15);
       }
       if (w.weapon == 1) { 
         velocity.x = velocity.x + random(-1 * w.recoil/45, 1 * w.recoil/45);
         velocity.y = velocity.y+ random(-1 * w.recoil/45, 1 * w.recoil/45);
       }
 
-      x = p.location.x + velocity.x*2;
-      y = p.location.y + velocity.y*2;
-      can = 1;
+      x = p.location.x;
+      y = p.location.y;
+      spawn = 1;
     }
   }
 
@@ -50,6 +50,7 @@ class Bullet {
   }
 
   void display() {
+    if(dist(x, y, p.location.x, p.location.y) > 300);
     strokeWeight(1);
     fill(255, 100, 0);
     stroke(255);
