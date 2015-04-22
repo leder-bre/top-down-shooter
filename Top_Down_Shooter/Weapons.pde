@@ -1,4 +1,6 @@
 class Weapons {
+  int totpammo = 30;
+  int totmammo = 60;
   int weapon = 1;
   int canShoot = 0;
   int fireRate = 0;
@@ -92,10 +94,10 @@ class Weapons {
     textFont(p.fontext, 20);
     fill(0);
     if (weapon == 1) {
-      text("Ammo: " + pammo + "/15", width-250, height-20);
+      text("Ammo: " + pammo + "/" + totpammo, width-250, height-20);
     }
     if (weapon == 2) {
-      text("Ammo: " + mammo + "/30", width-223, height-20);
+      text("Ammo: " + mammo + "/" + totmammo, width-223, height-20);
     }
     popMatrix();
 

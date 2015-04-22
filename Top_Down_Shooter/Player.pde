@@ -2,7 +2,7 @@ class Player {
   PVector location;
   float ammo;
   int health = 300;
-  int i;
+  int maxBullets;
   int count;
   PVector velocity;
   int bang;
@@ -18,7 +18,7 @@ class Player {
     velocity = new PVector (0, 0);
     location.x = tempX;
     location.y = tempY;
-    i = 1;
+    maxBullets = 1;
     bang = 0;
   }
 
@@ -28,45 +28,54 @@ class Player {
 
     if (keyPressed) {
       if (key == 'r') {
-        if (w.weapon == 1) { 
+        if (w.weapon == 1 && w.pammo + w.totpammo >= 15) {
+          w.totpammo -= 15 - w.pammo;
           w.pammo = 15;
+        } else if (w.weapon == 1 && w.pammo + w.totpammo < 15){
+          w.pammo += w.totpammo;
+          w.totpammo = 0;
         }
-        if (w.weapon == 2) {
+
+        if (w.weapon == 2 && w.mammo + w.totmammo >= 30) {
+          w.totmammo -= 30 - w.mammo;
           w.mammo = 30;
+        } else if (w.weapon == 2 && w.mammo + w.totmammo < 30){
+          w.mammo += w.totmammo;
+          w.totmammo = 0;
         }
       }
     }
 
-  /*
+    /*
     for (int i = 0; i < walls.length; i++) {
-      if (location.x-3 > walls[i].x - walls[i].wide/2 && location.x-3 < walls[i].x + walls[i].wide/2 && location.y > walls[i].y - walls[i].high/2 && location.y < walls[i].y + walls[i].high/2) {
-        velocity.x = 0;
-      }
-    }
+     if (location.x-3 > walls[i].x - walls[i].wide/2 && location.x-3 < walls[i].x + walls[i].wide/2 && location.y > walls[i].y - walls[i].high/2 && location.y < walls[i].y + walls[i].high/2) {
+     velocity.x = 0;
+     }
+     }
+     
+     
+     for (int i = 0; i < walls.length; i++) {
+     if (location.x+3 > walls[i].x - walls[i].wide/2 && location.x+3 < walls[i].x + walls[i].wide/2 && location.y > walls[i].y - walls[i].high/2 && location.y < walls[i].y + walls[i].high/2) {
+     velocity.x = 0;
+     }
+     }
+     
+     
+     for (int i = 0; i < walls.length; i++) {
+     if (location.x > walls[i].x - walls[i].wide/2 && location.x < walls[i].x + walls[i].wide/2 && location.y-3 > walls[i].y - walls[i].high/2 && location.y-3 < walls[i].y + walls[i].high/2) {
+     velocity.y = 0;
+     }
+     }
+     
+     
+     
+     for (int i = 0; i < walls.length; i++) {
+     if (location.x > walls[i].x - walls[i].wide/2 && location.x < walls[i].x + walls[i].wide/2 && location.y+3 > walls[i].y - walls[i].high/2 && location.y+3 < walls[i].y + walls[i].high/2) {
+     velocity.y = 0;
+     }
+     }
+     */
 
-
-    for (int i = 0; i < walls.length; i++) {
-      if (location.x+3 > walls[i].x - walls[i].wide/2 && location.x+3 < walls[i].x + walls[i].wide/2 && location.y > walls[i].y - walls[i].high/2 && location.y < walls[i].y + walls[i].high/2) {
-        velocity.x = 0;
-      }
-    }
-
-
-    for (int i = 0; i < walls.length; i++) {
-      if (location.x > walls[i].x - walls[i].wide/2 && location.x < walls[i].x + walls[i].wide/2 && location.y-3 > walls[i].y - walls[i].high/2 && location.y-3 < walls[i].y + walls[i].high/2) {
-        velocity.y = 0;
-      }
-    }
-
-
-
-    for (int i = 0; i < walls.length; i++) {
-      if (location.x > walls[i].x - walls[i].wide/2 && location.x < walls[i].x + walls[i].wide/2 && location.y+3 > walls[i].y - walls[i].high/2 && location.y+3 < walls[i].y + walls[i].high/2) {
-        velocity.y = 0;
-      }
-    }
-    */
-    
     for (int i = 0; i < walls.length; i++) {
       if (location.x > walls[i].x - walls[i].wide/2 && location.x < walls[i].x + walls[i].wide/2 && location.y+velocity.y > walls[i].y - walls[i].high/2 && location.y+velocity.y < walls[i].y + walls[i].high/2) {
         location.y-=velocity.y * 1.1;
@@ -75,7 +84,7 @@ class Player {
         location.x-=velocity.x * 1.1;
       }
     }
-    
+
     velocity.normalize();
     velocity.mult(3);
     location.add(velocity);
@@ -217,17 +226,16 @@ class Player {
     }
 
     popMatrix();
-    
-      stroke(255);
-      fill(40, 80, 80, 150);
-      rect(width-172, height -50, 300, 28, 3);
-      fill(255, 0, 0, 200);
-      noStroke();
-      rect(width - 21 - health/2, height -50, health - 1, 26, 3);
-      fill(0);
-      textFont(fontext, 20);
-      text("Health: " + health/3 + "/100", width-250, height-43);
-    
+
+    stroke(255);
+    fill(40, 80, 80, 150);
+    rect(width-172, height -50, 300, 28, 3);
+    fill(255, 0, 0, 200);
+    noStroke();
+    rect(width - 21 - health/2, height -50, health - 1, 26, 3);
+    fill(0);
+    textFont(fontext, 20);
+    text("Health: " + health/3 + "/100", width-250, height-43);
   }
 
   void shoot() {
@@ -248,7 +256,7 @@ class Player {
             w.canShoot = w.fireRate;
             w.shot=true;
             gunshot.play();
-            i += 1;
+            maxBullets += 1;
             w.recoil += 20;
             if (w.weapon == 1) {
               w.recoil += 20;

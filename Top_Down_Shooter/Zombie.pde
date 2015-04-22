@@ -167,7 +167,7 @@ class Zombie {
     rect(x, y - 50, 50, 10);
     if (bleeding > 0) {
       noStroke();
-      fill(255, 0, 0, bleeding);
+      fill(255, 0, 0, bleeding * 3);
       ellipse(x+30, y, 20, 20);
       triangle(x + 20, y, x + 40, y, x + 30, y - 20);
     }
@@ -177,12 +177,12 @@ class Zombie {
     for (int q = 0; q < p.maxBullets; q++) {
       if (w.weapon != 3) {
         if (dist(bullets[q].x, bullets[q].y, x, y) < 20) {   
-          bleeding = 236;
+          bleeding = 100;
           bullets[q].x = -100;
           if (w.weapon == 1) {
-            health-=49;
+            health -=49;
           } else if (w.weapon == 2) {
-            health -= 35;
+            health -= 32;
           }
           if (health <= 0) {
             x = -90;
@@ -191,7 +191,7 @@ class Zombie {
       } else {
         if (dist(bullets[0].x, bullets[0].y, x, y) < 40) {  
           if (w.canknife = true) {
-            bleeding = 276;
+            bleeding = 48;
             health -= 98;
             bullets[0].x = -100;
             w.canknife = false;
