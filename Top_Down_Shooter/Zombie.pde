@@ -10,7 +10,7 @@ class Zombie {
   float spotx;
   float spoty;
   PVector movement;
-  int health = 100;
+  float health = 100;
   int attack = 0;
   int bleeding = 1;
   int r;
@@ -23,11 +23,11 @@ class Zombie {
 
   void spawn() {
     size = random(0.9, 1.1);
-    speed = random(0.8, 1.2);
+    speed = ((size-1) * -3) + 1;
     r = int(random(100));
     g = int(random(100));
     b = int(random(100));
-    health = 100;
+    health = 100 * size;
     seen = 0;
     looking = 0;
     int chooser = int(random(100));
@@ -51,9 +51,13 @@ class Zombie {
     xspeed = 1;
     yspeed = 1;
     movement = new PVector(0, 0);
+    bleeding = 0;
   }
 
   void move() {
+
+    xsee = xspeed;
+    ysee = yspeed;
 
     if (seen == -180) {
       seen = 0;  
@@ -109,8 +113,6 @@ class Zombie {
         movement.mult(2);
         xspeed = movement.x;
         yspeed = movement.y;
-        xsee = xspeed;
-        ysee = yspeed;
         seen -=1;
       }
     }
@@ -130,10 +132,11 @@ class Zombie {
 
 
   void walk() {
-    x+=xspeed * speed;
-    y+=yspeed * speed;
+    if (dist(p.location.x, p.location.y, x, y) > 40) {
+      x+=xspeed * speed;
+      y+=yspeed * speed;
+    }
   }
-
 
   void display() {
     if (attack > 0) {
@@ -142,7 +145,7 @@ class Zombie {
     pushMatrix();
     translate(x, y);
     scale(size, size);
-    if (dist(p.location.x, p.location.y, x, y) < 40 && seen > 0) {
+    if (dist(p.location.x, p.location.y, x, y) < 45 && seen > 0) {
       rotate(atan2((y + ysee)-y, (x + xsee)-x ));
     } else {
       rotate(atan2((y + yspeed)-y, (x + xspeed)-x ));
@@ -164,7 +167,7 @@ class Zombie {
     fill(0, 0);
     stroke(0);
     strokeWeight(1);
-    rect(x, y - 50, 50, 10);
+    rect(x, y - 50, 50 * size, 10);
     if (bleeding > 0) {
       noStroke();
       fill(255, 0, 0, bleeding * 3);
@@ -192,7 +195,7 @@ class Zombie {
         if (dist(bullets[0].x, bullets[0].y, x, y) < 40) {  
           if (w.canknife = true) {
             bleeding = 48;
-            health -= 98;
+            health -= 97;
             bullets[0].x = -100;
             w.canknife = false;
             if (health <= 0) {
@@ -203,8 +206,6 @@ class Zombie {
       }
     }//so dank
     if (dist(p.location.x, p.location.y, x, y) < 40 && seen > 0) {
-      xspeed = 0;
-      yspeed = 0;
       if (attack == 0) {
         p.health -= 30;
         attack = 40;

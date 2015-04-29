@@ -5,7 +5,7 @@ Bullet bullets[] = new Bullet[1000000];
 Wall walls[] = new Wall[80];
 Weapons w;
 Pickup pick;
-Zombie z[] = new Zombie[20];
+Zombie z[] = new Zombie[100];
 boolean pause;
 float distance;
 float accuracy;
@@ -16,6 +16,7 @@ PFont titlefont;
 float wi;
 float h;
 boolean run;
+int hodor = 0;
 
 void setup() {
   smooth();
@@ -63,8 +64,8 @@ void draw() {
     textFont(titlefont, 100);
     textAlign(CENTER);
     fill(255);
-    rect(wi/2, height-h/2 - 10, wi/4, h/11);
-    rect(wi/2, height-h/3 - 10, wi/4, h/11);
+    rect(wi/2, height-h/2 - 10, wi/4, h/11, 5);
+    rect(wi/2, height-h/3 - 10, wi/4, h/11, 5);
     textSize(35);
     text("By: Brendan Leder", width-wi/7, height-h/21);
     textSize(157);
@@ -95,8 +96,14 @@ void keyReleased() {
 }
 
 void keyPressed() {
-  if (run == true) {
-    g.gkeyPressed();
+ 
+  if (hodor == 1) {
+    if (run == true) {
+      g.gkeyPressed();
+    }
+  }
+   if (hodor == 0) {
+    hodor = 1;
   }
 }
 

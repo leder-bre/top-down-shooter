@@ -105,6 +105,7 @@ class Player {
         pun2 = 19;
       }
     }
+    
 
     stroke(0);
     strokeWeight(1);

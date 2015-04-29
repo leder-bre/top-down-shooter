@@ -1,5 +1,8 @@
 class Game {
-  
+
+  int wavelength = 10;
+  int surviving;
+  float countdown = 600;
 
   void gdraw() {
 
@@ -51,27 +54,50 @@ class Game {
         }
       }
 
-      for (int q = 0; q < z.length; q++) {
-        if (z[q].x > 0) {   
+      for (int q = 0; q < wavelength; q++) {
+        if (z[q].x > 0) {
+          surviving += 1;
           z[q].move();
           z[q].display();
           z[q].attack();
           z[q].walk();
         }
       }
-
+      pick.display();
       for (int u = 0; u < walls.length; u++) {
         walls[u].display();
       }
       fill(200);
       rect(width/2, height - 40, width, 80);
       pick.run();
-      pick.display();
+
       p.move();
       p.shoot();
       p.display();
       w.run();
-      bullets[1].display();
+
+      fill(0);
+      textSize(25);
+      textAlign(RIGHT);
+      int wave = wavelength/5 - 1;
+      text("Wave: " + wave, width-10, 30);
+      textAlign(LEFT);
+
+      if (surviving == 0) {
+
+        text("Next Wave: " + countdown/60, width-175, 60);
+        countdown -= 1;
+        if (countdown == 0) {
+          wavelength += 5;
+          for (int q = 0; q < wavelength; q++) {
+            z[q].spawn();
+          }
+          countdown = 600;
+        }
+      }
+
+
+      surviving = 0;
     }
   }
 
@@ -134,7 +160,7 @@ class Game {
       p.velocity.y = 0;
     }
     if (key == 'p') {
-      for (int q = 0; q < z.length; q++) {
+      for (int q = 0; q < wavelength; q++) {
         z[q].spawn();
       }
     }

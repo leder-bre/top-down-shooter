@@ -4,16 +4,34 @@ class Pickup {
   int ay;
   int px;
   int py;
+  int hx;
+  int hy;
   int arot;
   int prot;
+  int hrot;
   int check;
   boolean a = false;
   boolean pi = false;
+  boolean h = false;
   int lokx = -95;
 
   void run() {
     check += 1;
-    if (check % 4000 == 0) {
+    if (check % 1000 == 0) {
+
+      if (h == false) {
+        hrot = int(random(100));
+        h = true;
+        hx = int(random(width));
+        hy = int(random(height - 100));
+        for (int i = 0; i < walls.length; i++) {
+          while (hx > walls[i].x - walls[i].wide/2 && hx < walls[i].x + walls[i].wide/2 && hy > walls[i].y - walls[i].high/2 && hy < walls[i].y + walls[i].high/2) {
+            hx = int(random(width));
+            hy = int(random(height - 100));
+          }
+        }
+      }  
+
       if (a == false && pi == true) {
         ax = int(random(width));
         ay = int(random(height - 100));
@@ -65,22 +83,49 @@ class Pickup {
   }
 
   void display() {
-    if (dist(p.location.x, p.location.y, ax, ay) < 20 && a == true) {
+
+    if (dist(p.location.x, p.location.y, hx, hy) < 20 && h == true) {
+      p.health += 60;
+      if (p.health > 300) {
+        p.health = 300;
+      }
+      h = false;
+    }
+
+    if (dist(p.location.x, p.location.y, ax, ay) < 20 && a == true && p.health < 300) {
       w.totmammo += 30;
       a = false;
-      if(w.totmammo > 60) {
-       w.totmammo = 60; 
+      if (w.totmammo > 60) {
+        w.totmammo = 60;
       }
       a = false;
     }
     if (dist(p.location.x, p.location.y, px, py) < 30 && pi == true) {
       w.totpammo += 15;
       pi = false;
-      if(w.totpammo > 30) {
+      if (w.totpammo > 30) {
         w.totpammo = 30;
       }
       pi = false;
     }
+
+
+    if (h == true) {
+      pushMatrix();
+      translate(hx, hy);
+      rotate(hrot);
+      stroke(0);
+      fill(255);
+      rect(-1, -1, 30, 30, 5);
+      fill(255, 0, 0);
+      rect(0, 0, 20, 4);
+      rect(0, 0, 4, 20);
+      noStroke();
+      rect(0, 1, 18, 3);
+      rect(0, 0, 18, 3);
+      popMatrix();
+    }
+
     if (pi == true) {
       pushMatrix();
       translate(px, py);
