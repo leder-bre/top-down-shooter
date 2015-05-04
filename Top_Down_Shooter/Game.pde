@@ -1,17 +1,38 @@
 class Game {
 
-  int wavelength = 10;
+  int wavelength = 2;
   int surviving;
-  float countdown = 600;
+  float countdown = 3600;
+
+  void gsetup() {
+    for (int q = 0; q < bullets.length; q++) {
+      bullets[q] = new Bullet();
+    }
+    walls[0]= new Wall(width/2, 5, width, 10);
+    walls[1]= new Wall(5, height/2, 10, height);
+    walls[2]= new Wall(width/2, height-45, width, 90);
+    walls[3]= new Wall(width-5, height/2, 10, height);
+    for (int y = 4; y < walls.length; y++) {
+      walls[y] = new Wall(random(0, width), random(0, height), random(width/40, width/10), random(height/40, height/10));
+    }
+    rectMode(CENTER);
+    for (int q = 0; q < z.length; q++) {
+      z[q].spawn();
+    }
+    w.mammo = 30;
+    w.pammo = 15;
+  }
 
   void gdraw() {
+
+
 
     looking.x=mouseX - p.location.x;
     looking.y=mouseY - p.location.y;
     looking.normalize();
 
     if (w.weapon == 3 && w.knife<50 && w.canknife == true) {
-      for (int i = -20; i < 60; i++) {
+      for (int i = 10; i < 60; i++) {
         bullets[0].x = p.location.x + looking.x * i;
         bullets[0].y = p.location.y + looking.y * i;
       }
@@ -36,6 +57,7 @@ class Game {
         distance += w.recoil/20;
         distance *= accuracy;
       }
+      fill(100, 20);
       background(100);
       stroke(255);
       strokeWeight(2);
@@ -54,15 +76,20 @@ class Game {
         }
       }
 
-      for (int q = 0; q < wavelength; q++) {
-        if (z[q].x > 0) {
-          surviving += 1;
-          z[q].move();
-          z[q].display();
-          z[q].attack();
-          z[q].walk();
+      for (int i = 0; i < wavelength; i++) {
+        if (z[i].dead > 1 && z[i].x > 0) {
+          z[i].died();
+          z[i].dead -= 1;
         }
       }
+
+      for (int q = 0; q < wavelength; q++) {
+        if (z[q].dead < 1) {
+          surviving += 1;
+          z[q].execute();
+        }
+      }
+
       pick.display();
       for (int u = 0; u < walls.length; u++) {
         walls[u].display();
@@ -79,21 +106,22 @@ class Game {
       fill(0);
       textSize(25);
       textAlign(RIGHT);
-      int wave = wavelength/5 - 1;
-      text("Wave: " + wave, width-10, 30);
+      text("Wave: " + wavelength/2, width-10, 30);
       textAlign(LEFT);
 
       if (surviving == 0) {
-
-        text("Next Wave: " + countdown/60, width-175, 60);
-        countdown -= 1;
-        if (countdown == 0) {
-          wavelength += 5;
-          for (int q = 0; q < wavelength; q++) {
-            z[q].spawn();
-          }
-          countdown = 600;
+        if (countdown > 200 + wavelength * 30) {
+          countdown = 200 + wavelength * 30;
         }
+      }
+      text("Next Wave: " + countdown/60, width-175, 60);
+      countdown -= 1;
+      if (countdown == 0) {
+        wavelength += 2;
+        for (int q = 0; q < wavelength + surviving; q++) {
+          z[q].spawn();
+        }
+        countdown = 3600 + wavelength * 30;
       }
 
 
@@ -106,7 +134,7 @@ class Game {
   }
 
   void gkeyPressed() {
-    if (key == ' ') {
+    if (key == 'p' || key== 'P') {
 
       if (pause == true) {
         pause = false;
@@ -115,20 +143,28 @@ class Game {
       }
     }
 
-    if (key == 'a') {
+    if (keyCode == SHIFT) {
+      p.sprinting = true;
+    }
+
+    if (key == 'a' || key == 'A') {
       p.velocity.x = -2;
+      p.runninga = true;
     }
 
-    if (key == 'd') {
-      p.velocity.x = +2;
+    if (key == 'd'|| key == 'D') {
+      p.velocity.x = 2;
+      p.runningd = true;
     }
 
-    if (key == 'w') {
+    if (key == 'w' ||key == 'W') {
       p.velocity.y = -2;
+      p.runningc = true;
     }
 
-    if (key == 's') {
-      p.velocity.y = +2;
+    if (key == 's'||key == 'S') {
+      p.velocity.y = 2;
+      p.runningb = true;
     }
 
     if (key == '1') {
@@ -144,22 +180,35 @@ class Game {
   }
 
   void gkeyReleased() {
-    if (key == 'a') {
-      p.velocity.x = 0;
+
+    if (keyCode == SHIFT) {
+      p.sprinting = false;
     }
 
-    if (key == 'd') {
-      p.velocity.x = 0;
-    }
-
-    if (key == 'w') {
+    if (key == 's' || key == 'S' || key == 'w' || key == 'W') {
       p.velocity.y = 0;
     }
 
-    if (key == 's') {
-      p.velocity.y = 0;
+    if (key == 's' || key == 'S' ) {
+      p.runningb = false;
     }
-    if (key == 'p') {
+    if (key == 'w' || key == 'W' ) {
+      p.runningc = false;
+    }
+
+    if (key == 'd' || key == 'D'||key == 'a' || key == 'A') {
+      p.velocity.x = 0;
+    }
+
+    if (key == 'd' || key == 'D') {
+      p.runningd = false;
+    }
+
+    if (key == 'a' || key == 'A') {
+      p.runninga = false;
+    }
+
+    if (key == 'z'|| key == 'Z') {
       for (int q = 0; q < wavelength; q++) {
         z[q].spawn();
       }

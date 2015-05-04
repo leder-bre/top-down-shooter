@@ -16,17 +16,24 @@ PFont titlefont;
 float wi;
 float h;
 boolean run;
-int hodor = 0;
+int title;
+PFont zFont;
 
 void setup() {
   smooth();
   size(1280, 750);
+  zFont = createFont("Courier Bold", 10);
   run = false;
   wi = width;
   h = height;
+  title = int(random(8));
   titlefont = createFont("ArnoPro-Bold", 200);
 
   g = new Game();
+
+  for (int q = 0; q < z.length; q++) {
+    z[q] = new Zombie();
+  }
 
   looking = new PVector(0, 0);
   gunshot = new SoundFile(this, "gunshot.mp3");
@@ -35,27 +42,8 @@ void setup() {
   p = new Player(width/2, height/2);
   w = new Weapons();
   pick = new Pickup();
-  for (int q = 0; q < z.length; q++) {
-    z[q] = new Zombie();
-  }
 
-
-  for (int q = 0; q < bullets.length; q++) {
-    bullets[q] = new Bullet();
-  }
-  walls[0]= new Wall(width/2, 5, width, 10);
-  walls[1]= new Wall(5, height/2, 10, height);
-  walls[2]= new Wall(width/2, height-45, width, 90);
-  walls[3]= new Wall(width-5, height/2, 10, height);
-  for (int y = 4; y < walls.length; y++) {
-    walls[y] = new Wall(random(0, width), random(0, height), random(width/40, width/10), random(height/40, height/10));
-  }
-  rectMode(CENTER);
-  for (int q = 0; q < z.length; q++) {
-    z[q].spawn();
-  }
-  w.mammo = 30;
-  w.pammo = 15;
+  g.gsetup();
 }
 
 void draw() {
@@ -68,8 +56,24 @@ void draw() {
     rect(wi/2, height-h/3 - 10, wi/4, h/11, 5);
     textSize(35);
     text("By: Brendan Leder", width-wi/7, height-h/21);
-    textSize(157);
-    text("Top Down Shooter", wi/2, h/4);
+    textSize(107);
+    if (title == 7) {
+      text("They Call him Gordonger", wi/2, h/4);
+    } else if (title == 6) {
+      text("They call me Bread", wi/2, h/4);
+    } else if (title == 5) {
+      text("Practiacally Arma IV", wi/2, h/4);
+    } else if (title == 4) {
+      text("A Game I Made", wi/2, h/4);
+    } else if (title == 3) {
+      text("Prepare 4 Disupointmnt", wi/2, h/4);
+    } else if (title == 2) {
+      text("Bethasta - Eldank Scralls", wi/2, h/4);
+    } else if (title == 1) {
+      text("Game of the Year Edition", wi/2, h/4);
+    } else {
+      text("Guy With A Gun", wi/2, h/4);
+    }
     fill(0);
     textSize(50);
     text("Start", wi/2, height-h/2);
@@ -96,14 +100,9 @@ void keyReleased() {
 }
 
 void keyPressed() {
- 
-  if (hodor == 1) {
-    if (run == true) {
-      g.gkeyPressed();
-    }
-  }
-   if (hodor == 0) {
-    hodor = 1;
+  title = int(random(8));
+  if (run == true) {
+    g.gkeyPressed();
   }
 }
 

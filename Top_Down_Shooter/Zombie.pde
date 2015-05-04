@@ -10,6 +10,7 @@ class Zombie {
   float spotx;
   float spoty;
   PVector movement;
+  PVector calc;
   float health = 100;
   int attack = 0;
   int bleeding = 1;
@@ -20,10 +21,19 @@ class Zombie {
   float speed;
   float xsee;
   float ysee;
+  int type;
+  int dead;
+  int bloodx;
+  int bloody;
 
   void spawn() {
+
+    dead = 0;
+    bloodx = int(random(-10, 10));
+    bloody = int(random(-10, 10));
     size = random(0.9, 1.1);
-    speed = ((size-1) * -3) + 1;
+    speed = ((size-1) * -3) + 1.2;
+    calc = new PVector(0, 0);
     r = int(random(100));
     g = int(random(100));
     b = int(random(100));
@@ -48,13 +58,19 @@ class Zombie {
       }
     }
 
-    xspeed = 1;
-    yspeed = 1;
+    int choose = int(random(10));
+    int pick = int(random(10));
+    calc.x = choose;
+    calc.y = pick;
+    calc.normalize();
+    xspeed = calc.x;
+    yspeed = calc.y;
     movement = new PVector(0, 0);
     bleeding = 0;
   }
 
   void move() {
+
 
     xsee = xspeed;
     ysee = yspeed;
@@ -63,16 +79,11 @@ class Zombie {
       seen = 0;  
       int choose = int(random(10));
       int pick = int(random(10));
-      if (pick % 2 == 0) {
-        xspeed = 1;
-      } else {
-        xspeed = -1;
-      }
-      if (choose % 2 == 0) {
-        yspeed = 1;
-      } else {
-        yspeed = -1;
-      }
+      calc.x = choose;
+      calc.y = pick;
+      calc.normalize();
+      xspeed = calc.x;
+      yspeed = calc.y;
     }
 
 
@@ -83,14 +94,15 @@ class Zombie {
         bleeding -= 4;
         if (bleeding % 20 == 0) {
           health -= 1;
+          if (health < 1) {
+            dead = 1020;
+          }
         }
       }
 
-      if (health <= 0) {
-        x = -90;
-      }
 
-      if (dist(x, y, p.location.x, p.location.y) < 400) {
+
+      if (dist(x, y, p.location.x, p.location.y) < 800) {
         seen = 30;
         xlook= (p.location.x - x) / 100;
         ylook= (p.location.y - y) / 100;
@@ -110,7 +122,7 @@ class Zombie {
         movement.x = xlook;
         movement.y = ylook;
         movement.normalize();
-        movement.mult(2);
+        movement.mult(2.5);
         xspeed = movement.x;
         yspeed = movement.y;
         seen -=1;
@@ -163,11 +175,20 @@ class Zombie {
     popMatrix();
     fill(255, 0, 0, 100);
     noStroke();
-    rect(x, y - 50, health/2, 10);
+    rect(x, y - 50, health/2, 12);
+    fill(0);
+    textAlign(CENTER);
+    textSize(2);
+    textFont(zFont);
+    pushMatrix();
+    translate(x, y-47);
+    scale(1.5, 1);
+    text(int(health), 0, 0);
+    popMatrix();
     fill(0, 0);
     stroke(0);
     strokeWeight(1);
-    rect(x, y - 50, 50 * size, 10);
+    rect(x, y - 50, 50 * size, 12);
     if (bleeding > 0) {
       noStroke();
       fill(255, 0, 0, bleeding * 3);
@@ -187,19 +208,19 @@ class Zombie {
           } else if (w.weapon == 2) {
             health -= 32;
           }
-          if (health <= 0) {
-            x = -90;
+          if (health < 1) {
+            dead = 1020;
           }
         }
       } else {
         if (dist(bullets[0].x, bullets[0].y, x, y) < 40) {  
           if (w.canknife = true) {
-            bleeding = 48;
-            health -= 97;
+            bleeding = 128;
+            health -= 95;
             bullets[0].x = -100;
             w.canknife = false;
-            if (health <= 0) {
-              x = -100;
+            if (health < 1) {
+              dead = 1020;
             }
           }
         }
@@ -211,6 +232,68 @@ class Zombie {
         attack = 40;
       }
     }
-  }//how dank?
+  }
+
+  void died() {
+    if (dead == 1) {
+      x = -100;
+    }
+    pushMatrix();
+    translate(x, y);
+    rotate(atan2((y + ysee)-y, (x + xsee)-x ));
+    scale(size, size);
+    scale(0.9, 0.9);
+    strokeWeight(1);
+    stroke(100, 0, 0, dead);
+    fill(150, 10, 10, dead - 20);
+    ellipse(-55 + bloodx, 0 + bloody, 10, 10);
+    ellipse(-65 - bloodx, 0 + bloody, 10, 10);
+    ellipse(-75 - bloodx, 5 - bloody, 10, 10);
+    ellipse(-50 + bloody, -10 + bloodx, 10, 10);
+    ellipse(-65 - bloody, 2 + bloodx, 10, 10);
+    ellipse(-50 - bloody, -5 - bloodx, 10, 10);
+    ellipse(-75 - bloodx, 2 + bloodx, 10, 10);
+    ellipse(-70 - bloodx, -5 - bloodx, 10, 10);
+    ellipse(-60 + bloodx, 5 + bloodx, 10, 10);
+    ellipse(-55 - bloody, 2 + bloody, 10, 10);
+    ellipse(-70 - bloody, -5 - bloody, 10, 10);
+    ellipse(-80 + bloody, 5 + bloody, 10, 10);
+    fill(0, 100, 0, dead/3);
+    stroke(0, dead/3);
+    strokeWeight(1);
+    rect(67, 14, 10, 17, 3);
+    rect(71, -11, 17, 10, 3);
+    ellipse(6, 48, 13, 13);
+    ellipse(14, -30, 13, 13);
+    ellipse(-40, 0, 30, 30);
+    fill(r, g, b, dead/3);
+    pushMatrix();
+    rotate(1);
+    rect(23, 21, 38, 11);
+    popMatrix();
+    pushMatrix();
+    rotate(-13);
+    rect(7, -22, 38, 11);
+    popMatrix();
+    rect(44, 10, 40, 12, 2);
+    rect(44, -10, 40, 12, 2);
+    rect(0, 0, 50, 35, 5);
+    popMatrix();
+  }
+
+  void execute() {
+    if (x > 1) {
+      if (dead < 1) {
+        move();
+        display();
+        attack();
+        walk();
+      }  
+      if (dead > 1) {
+        dead -= 1;
+      }
+    }
+  }
+  //how dank?
 }
 //as dank as possebru

@@ -1,7 +1,7 @@
 class Weapons {
   int totpammo = 30;
   int totmammo = 60;
-  int weapon = 1;
+  int weapon = 3;
   int canShoot = 0;
   int fireRate = 0;
   int recoil = 0;

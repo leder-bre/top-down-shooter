@@ -11,6 +11,16 @@ class Player {
   boolean punch = false;
   int puncher = 1;
   PFont fontext;
+  boolean sprinting = false;
+  int sprint = 300;
+  int runtimer = 0;
+  float legs = 0;
+  int legflip = 2;
+  boolean runninga;
+  boolean runningb;
+  boolean runningc;
+  boolean runningd;
+
 
   Player(float tempX, float tempY) {
     fontext = createFont("SukhumvitSet-Light", 100);
@@ -24,14 +34,35 @@ class Player {
 
   void move() {
 
-    //  for (int i = 0; i < walls.length; i++) { 
+    if (legs > 26) {
+      legflip = -2;
+    } else if (legs < -26) {
+      legflip = 2;
+    }
+
+
+    if (runninga == true||runningb == true||runningc == true||runningd == true) {
+      legs += legflip;
+      if (sprinting == true && sprint > 1) {
+        legs += legflip/2;
+      }
+    } else {
+      legs = 0;
+    }
+
+
+
+    if (runtimer > 0 && (sprinting == false || sprint == 0)) {
+      runtimer -= 1;
+    }
 
     if (keyPressed) {
-      if (key == 'r') {
+
+      if (key == 'r' || key == 'R') {
         if (w.weapon == 1 && w.pammo + w.totpammo >= 15) {
           w.totpammo -= 15 - w.pammo;
           w.pammo = 15;
-        } else if (w.weapon == 1 && w.pammo + w.totpammo < 15){
+        } else if (w.weapon == 1 && w.pammo + w.totpammo < 15) {
           w.pammo += w.totpammo;
           w.totpammo = 0;
         }
@@ -39,7 +70,7 @@ class Player {
         if (w.weapon == 2 && w.mammo + w.totmammo >= 30) {
           w.totmammo -= 30 - w.mammo;
           w.mammo = 30;
-        } else if (w.weapon == 2 && w.mammo + w.totmammo < 30){
+        } else if (w.weapon == 2 && w.mammo + w.totmammo < 30) {
           w.mammo += w.totmammo;
           w.totmammo = 0;
         }
@@ -87,6 +118,14 @@ class Player {
 
     velocity.normalize();
     velocity.mult(3);
+    if (sprinting == true && sprint > 1) {
+      sprint -= 1;
+      velocity.mult(1.5);
+      runtimer = 60;
+    }
+    if (frameCount % 2 == 0 && sprint < 300 && sprinting == false && runtimer == 0) {
+      sprint+=1;
+    }
     location.add(velocity);
   }
 
@@ -105,7 +144,7 @@ class Player {
         pun2 = 19;
       }
     }
-    
+
 
     stroke(0);
     strokeWeight(1);
@@ -113,7 +152,18 @@ class Player {
     pushMatrix();
 
     translate(location.x, location.y);
+
     rotate(atan2(mouseY-location.y, mouseX-location.x));
+
+    fill(210, 200, 150);
+
+    ellipse(legs, 10, 15, 12);
+    ellipse(-1*legs, -10, 15, 12);
+
+    fill(30, 20, 100);
+
+    rect(legs/2 * -1, -10, legs, 10);
+    rect(legs/2, 10, legs, 10);
 
     if (w.weapon == 1) {
       fill(210, 55, 55);
@@ -233,7 +283,19 @@ class Player {
     rect(width-172, height -50, 300, 28, 3);
     fill(255, 0, 0, 200);
     noStroke();
+    rect(location.x, location.y-37, health/6, 7);
     rect(width - 21 - health/2, height -50, health - 1, 26, 3);
+    fill(150, 150, 0, 200);
+    rect(location.x, location.y-30, sprint/6, 7);
+    textFont(zFont, 7);
+    pushMatrix();
+    translate(location.x, location.y);
+    scale(1.5, 1);
+    fill(0);
+    textAlign(CENTER);
+    text(health/3, 0, -35) ;
+    text(sprint/3, 0, -28);
+    popMatrix();
     fill(0);
     textFont(fontext, 20);
     text("Health: " + health/3 + "/100", width-250, height-43);

@@ -84,7 +84,7 @@ class Pickup {
 
   void display() {
 
-    if (dist(p.location.x, p.location.y, hx, hy) < 20 && h == true) {
+    if (dist(p.location.x, p.location.y, hx, hy) < 20 && h == true && p.health < 300) {
       p.health += 60;
       if (p.health > 300) {
         p.health = 300;
@@ -92,7 +92,7 @@ class Pickup {
       h = false;
     }
 
-    if (dist(p.location.x, p.location.y, ax, ay) < 20 && a == true && p.health < 300) {
+    if (dist(p.location.x, p.location.y, ax, ay) < 20 && a == true && w.totmammo < 60) {
       w.totmammo += 30;
       a = false;
       if (w.totmammo > 60) {
@@ -100,7 +100,7 @@ class Pickup {
       }
       a = false;
     }
-    if (dist(p.location.x, p.location.y, px, py) < 30 && pi == true) {
+    if (dist(p.location.x, p.location.y, px, py) < 30 && pi == true && w.totpammo < 30) {
       w.totpammo += 15;
       pi = false;
       if (w.totpammo > 30) {
@@ -131,7 +131,7 @@ class Pickup {
       translate(px, py);
       rotate(prot);
       translate(-22, -15);
-      scale(0.5, 0.5);
+      scale(0.7, 0.7);
       fill(150);
       stroke(10);
 
