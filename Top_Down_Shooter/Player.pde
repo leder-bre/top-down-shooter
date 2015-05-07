@@ -20,7 +20,12 @@ class Player {
   boolean runningb;
   boolean runningc;
   boolean runningd;
-
+  int sr = 0;
+  int sg = 0;
+  int sb = 0;
+  int pr = 0;
+  int pg = 0;
+  int pb = 0;
 
   Player(float tempX, float tempY) {
     fontext = createFont("SukhumvitSet-Light", 100);
@@ -34,10 +39,12 @@ class Player {
 
   void move() {
 
-    if (legs > 26) {
-      legflip = -2;
-    } else if (legs < -26) {
-      legflip = 2;
+    if (frameCount%5==0) {
+      if (legs > 26) {
+        legflip = -2;
+      } else if (legs < -26) {
+        legflip = 2;
+      }
     }
 
 
@@ -153,20 +160,20 @@ class Player {
 
     translate(location.x, location.y);
 
-    rotate(atan2(mouseY-location.y, mouseX-location.x));
+    rotate(atan2(mouseY-height/2, mouseX-width/2));
 
     fill(210, 200, 150);
 
     ellipse(legs, 10, 15, 12);
     ellipse(-1*legs, -10, 15, 12);
 
-    fill(30, 20, 100);
+    fill(pr, pg, pb);
 
     rect(legs/2 * -1, -10, legs, 10);
     rect(legs/2, 10, legs, 10);
 
     if (w.weapon == 1) {
-      fill(210, 55, 55);
+      fill(sr, sg, sb);
       beginShape();
       vertex(8, -18);
       vertex(28, -10);
@@ -194,7 +201,7 @@ class Player {
 
       rect(38, 2, 15, 5);
     } else if (w.weapon == 2) {
-      fill(210, 55, 55);
+      fill(sr, sg, sb);
       beginShape();
       vertex(9, -21);
       vertex(20, -20);
@@ -223,7 +230,7 @@ class Player {
       fill(10);
       rect(30, 4, 25, 5);
     } else {
-      fill(210, 55, 55);
+      fill(sr, sg, sb);
       beginShape();
       vertex(2, -21);
       vertex(20, -26 + pun2/4);
@@ -258,7 +265,7 @@ class Player {
       popMatrix();
     }
 
-    fill(210, 55, 55);
+    fill(sr, sg, sb);
     rect(0, 0, 15, 40, 5);
 
     fill(210, 200, 150);
@@ -277,14 +284,13 @@ class Player {
     }
 
     popMatrix();
+  }
 
-    stroke(255);
-    fill(40, 80, 80, 150);
-    rect(width-172, height -50, 300, 28, 3);
+  void HUD2() {
+
     fill(255, 0, 0, 200);
     noStroke();
     rect(location.x, location.y-37, health/6, 7);
-    rect(width - 21 - health/2, height -50, health - 1, 26, 3);
     fill(150, 150, 0, 200);
     rect(location.x, location.y-30, sprint/6, 7);
     textFont(zFont, 7);
@@ -296,6 +302,31 @@ class Player {
     text(health/3, 0, -35) ;
     text(sprint/3, 0, -28);
     popMatrix();
+  }
+
+
+  void HUD() {
+    fill(255, 0, 0, 200);
+    noStroke();
+    rect(width - 21 - health/2, height -50, health - 1, 26, 3);
+    stroke(255);
+    fill(40, 80, 80, 0);
+    rect(width-172, height -50, 300, 28, 3);
+    // fill(255, 0, 0, 200);
+    // noStroke();
+    // rect(location.x, location.y-37, health/6, 7);
+    // rect(width - 21 - health/2, height -50, health - 1, 26, 3);
+    // fill(150, 150, 0, 200);
+    // rect(location.x, location.y-30, sprint/6, 7);
+    // textFont(zFont, 7);
+    // pushMatrix();
+    // translate(location.x, location.y);
+    // scale(1.5, 1);
+    // fill(0);
+    // textAlign(CENTER);
+    // text(health/3, 0, -35) ;
+    // text(sprint/3, 0, -28);
+    // popMatrix();
     fill(0);
     textFont(fontext, 20);
     text("Health: " + health/3 + "/100", width-250, height-43);
@@ -326,6 +357,15 @@ class Player {
               w.pammo -= 1;
             } else {
               w.mammo -= 1;
+            }
+          } else {
+            fill(20, 0, 0);
+            textSize(50);
+            textFont(zFont, 50);
+            if (w.weapon == 1 && w.totpammo > 0 || w.weapon == 2 && w.totmammo > 0) {
+              text("Reload", p.location.x, p.location.y - 50);
+            } else {
+              text("Out of Ammo", p.location.x, p.location.y - 50);
             }
           }
         }

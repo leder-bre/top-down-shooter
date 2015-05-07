@@ -3,11 +3,15 @@ class Game {
   int wavelength = 2;
   int surviving;
   float countdown = 3600;
+  PVector move;
+  float wi;
+  float hi;
 
   void gsetup() {
     for (int q = 0; q < bullets.length; q++) {
       bullets[q] = new Bullet();
     }
+    move = new PVector(0, 0);
     walls[0]= new Wall(width/2, 5, width, 10);
     walls[1]= new Wall(5, height/2, 10, height);
     walls[2]= new Wall(width/2, height-45, width, 90);
@@ -21,15 +25,25 @@ class Game {
     }
     w.mammo = 30;
     w.pammo = 15;
+
+    hi = float(height);
+    wi = float(width);
   }
 
   void gdraw() {
 
+    //pushMatrix();
+
+    //translate(width/2 - p.location.x, height/2 - p.location.y);
 
 
-    looking.x=mouseX - p.location.x;
-    looking.y=mouseY - p.location.y;
+    looking.x=mouseX - wi/2;
+    looking.y=mouseY - hi/2;
     looking.normalize();
+
+    //popMatrix();
+
+
 
     if (w.weapon == 3 && w.knife<50 && w.canknife == true) {
       for (int i = 10; i < 60; i++) {
@@ -40,7 +54,7 @@ class Game {
       bullets[0].x = -99;
     }
 
-    distance = sqrt(((mouseX - p.location.x)*(mouseX - p.location.x))+((mouseY - p.location.y)*(mouseY - p.location.y)))/(width/4);
+    distance = 2*sqrt(((mouseX - p.location.x)*(mouseX - p.location.x))+((mouseY - p.location.y)*(mouseY - p.location.y)))/(width/4);
     if (w.weapon == 1) {
       accuracy = 0.5;
     } else if (w.weapon == 2) {
@@ -67,6 +81,13 @@ class Game {
       line(mouseX, mouseY - 10* distance, mouseX, mouseY - 15* distance);
       p.count -= 1;
 
+
+      pushMatrix();
+
+
+      translate(width/2 - p.location.x, height/2 - p.location.y);
+
+
       for (int q = 1; q < p.maxBullets; q++) {
         bullets[q].call();
         if (bullets[q].x > -100 && bullets[q].x < width+100 && bullets[q].y > -100 && bullets[q].y < height +100) {
@@ -83,24 +104,36 @@ class Game {
         }
       }
 
-      for (int q = 0; q < wavelength; q++) {
+    for (int q = 0; q < wavelength; q++) {
         if (z[q].dead < 1) {
           surviving += 1;
           z[q].execute();
         }
       }
-
-      pick.display();
-      for (int u = 0; u < walls.length; u++) {
+      
+        for (int u = 0; u < walls.length; u++) {
         walls[u].display();
       }
-      fill(200);
-      rect(width/2, height - 40, width, 80);
+
+      pick.display();
+
       pick.run();
 
       p.move();
       p.shoot();
+
       p.display();
+      for (int u = 0; u < walls.length; u++) {
+        walls[u].displayTop();
+      }
+
+      p.HUD2();
+
+      popMatrix();
+
+      fill(200);
+      rect(width/2, height - 40, width, 80);
+      p.HUD();
       w.run();
 
       fill(0);
@@ -167,14 +200,14 @@ class Game {
       p.runningb = true;
     }
 
-    if (key == '1') {
+    if (key == '1' || key == '!') {
       w.weapon = 1;
     }
 
-    if (key == '2') {
+    if (key == '2' || key == '@') {
       w.weapon = 2;
     }
-    if (key == '3') {
+    if (key == '3' || key == '#') {
       w.weapon = 3;
     }
   }

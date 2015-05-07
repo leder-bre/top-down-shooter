@@ -15,8 +15,8 @@ class Bullet {
   void call() {
     if (spawn == 0) {
 
-      velocity.x = mouseX - p.location.x;
-      velocity.y = mouseY - p.location.y;
+      velocity.x = mouseX - width/2;
+      velocity.y = mouseY - height/2;
       velocity.normalize();
       velocity.mult(20);
 

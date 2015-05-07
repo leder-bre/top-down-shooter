@@ -37,7 +37,7 @@ class Zombie {
     r = int(random(100));
     g = int(random(100));
     b = int(random(100));
-    health = 100 * size;
+    health = 110 * size;
     seen = 0;
     looking = 0;
     int chooser = int(random(100));
@@ -188,7 +188,7 @@ class Zombie {
     fill(0, 0);
     stroke(0);
     strokeWeight(1);
-    rect(x, y - 50, 50 * size, 12);
+    rect(x, y - 50, 55 * size, 12);
     if (bleeding > 0) {
       noStroke();
       fill(255, 0, 0, bleeding * 3);
@@ -204,9 +204,9 @@ class Zombie {
           bleeding = 100;
           bullets[q].x = -100;
           if (w.weapon == 1) {
-            health -=49;
+            health -= 55;
           } else if (w.weapon == 2) {
-            health -= 32;
+            health -= 45;
           }
           if (health < 1) {
             dead = 1020;
@@ -216,7 +216,7 @@ class Zombie {
         if (dist(bullets[0].x, bullets[0].y, x, y) < 40) {  
           if (w.canknife = true) {
             bleeding = 128;
-            health -= 95;
+            health -= 100;
             bullets[0].x = -100;
             w.canknife = false;
             if (health < 1) {

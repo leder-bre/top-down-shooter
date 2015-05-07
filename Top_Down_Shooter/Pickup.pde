@@ -16,8 +16,8 @@ class Pickup {
   int lokx = -95;
 
   void run() {
-    check += 1;
-    if (check % 1000 == 0) {
+    
+    if (frameCount % 1000 == 0) {
 
       if (h == false) {
         hrot = int(random(100));
@@ -116,6 +116,7 @@ class Pickup {
       rotate(hrot);
       stroke(0);
       fill(255);
+      scale(1.1, 1.1);
       rect(-1, -1, 30, 30, 5);
       fill(255, 0, 0);
       rect(0, 0, 20, 4);
