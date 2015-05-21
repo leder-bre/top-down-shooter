@@ -12,12 +12,14 @@ class Wall {
     high = tempHigh;
     move = new PVector(0, 0);
   }
-  
+
   void display() {
-    if(frameCount % 2 == 0) {
-    move.x = x - p.location.x;
-    move.y = y - p.location.y;
-    move.mult(0.2);
+    if (frameCount % 2 == 0) {
+      if (p.health > 0) {
+        move.x = x - p.location.x;
+        move.y = y - p.location.y;
+        move.mult(0.2);
+      }
     }
     fill(50, 40, 30); 
     if (move.x > 0) {
@@ -41,8 +43,8 @@ class Wall {
         endShape();
       }
     } else {
-      
-      
+
+
       if (move.y > 0) {
         beginShape();
         vertex(x-wide/2, y-high/2); //+-
@@ -62,7 +64,6 @@ class Wall {
         vertex(x+move.x-3*wide/8, y+move.y+3*high/8); //+-
         endShape();
       }
-      
     }
     fill(50, 40, 30); 
     noStroke();

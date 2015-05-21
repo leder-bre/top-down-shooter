@@ -20,14 +20,20 @@ class Game {
       walls[y] = new Wall(random(0, width), random(0, height), random(width/40, width/10), random(height/40, height/10));
     }
     rectMode(CENTER);
-    for (int q = 0; q < z.length; q++) {
-      z[q].spawn();
-    }
+
     w.mammo = 30;
     w.pammo = 15;
-
+    for (int q = 0; q < z.length; q++) {
+      z[q] = new Zombie();
+    }
+    for (int q = 0; q < wavelength; q++) {
+      z[q].spawn();
+    }
     hi = float(height);
     wi = float(width);
+    w.wsetup();
+    //p = new Player(wi/2, hi/2);
+    pick.Pickup();
   }
 
   void gdraw() {
@@ -79,7 +85,6 @@ class Game {
       line(mouseX - 10* distance, mouseY, mouseX - 15* distance, mouseY);
       line(mouseX, mouseY + 10* distance, mouseX, mouseY + 15* distance);
       line(mouseX, mouseY - 10* distance, mouseX, mouseY - 15* distance);
-      p.count -= 1;
 
 
       pushMatrix();
@@ -104,14 +109,14 @@ class Game {
         }
       }
 
-    for (int q = 0; q < wavelength; q++) {
+      for (int q = 0; q < wavelength; q++) {
         if (z[q].dead < 1) {
           surviving += 1;
           z[q].execute();
         }
       }
-      
-        for (int u = 0; u < walls.length; u++) {
+
+      for (int u = 0; u < walls.length; u++) {
         walls[u].display();
       }
 
@@ -120,15 +125,24 @@ class Game {
       pick.run();
 
       p.move();
-      p.shoot();
 
       p.display();
       for (int u = 0; u < walls.length; u++) {
         walls[u].displayTop();
       }
 
+      p.shoot();
+
       p.HUD2();
 
+      popMatrix();
+
+      pushMatrix();
+      stroke(255);
+      line(mouseX + 10 * distance, mouseY, mouseX + 15* distance, mouseY);
+      line(mouseX - 10* distance, mouseY, mouseX - 15* distance, mouseY);
+      line(mouseX, mouseY + 10* distance, mouseX, mouseY + 15* distance);
+      line(mouseX, mouseY - 10* distance, mouseX, mouseY - 15* distance);
       popMatrix();
 
       fill(200);
@@ -136,7 +150,7 @@ class Game {
       p.HUD();
       w.run();
 
-      fill(0);
+      fill(200);
       textSize(25);
       textAlign(RIGHT);
       text("Wave: " + wavelength/2, width-10, 30);

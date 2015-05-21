@@ -15,47 +15,30 @@ class Pickup {
   boolean h = false;
   int lokx = -95;
 
+  void Pickup() {
+    a = false;
+    pi = false;
+    h = false;
+  }
+
   void run() {
-    
-    if (frameCount % 1000 == 0) {
+    if (p.health > 0) {
+      if (frameCount % 1000 == 0) {
 
-      if (h == false) {
-        hrot = int(random(100));
-        h = true;
-        hx = int(random(width));
-        hy = int(random(height - 100));
-        for (int i = 0; i < walls.length; i++) {
-          while (hx > walls[i].x - walls[i].wide/2 && hx < walls[i].x + walls[i].wide/2 && hy > walls[i].y - walls[i].high/2 && hy < walls[i].y + walls[i].high/2) {
-            hx = int(random(width));
-            hy = int(random(height - 100));
+        if (h == false) {
+          hrot = int(random(100));
+          h = true;
+          hx = int(random(width));
+          hy = int(random(height - 100));
+          for (int i = 0; i < walls.length; i++) {
+            while (hx > walls[i].x - walls[i].wide/2 && hx < walls[i].x + walls[i].wide/2 && hy > walls[i].y - walls[i].high/2 && hy < walls[i].y + walls[i].high/2) {
+              hx = int(random(width));
+              hy = int(random(height - 100));
+            }
           }
-        }
-      }  
+        }  
 
-      if (a == false && pi == true) {
-        ax = int(random(width));
-        ay = int(random(height - 100));
-        for (int i = 0; i < walls.length; i++) {
-          while (ax > walls[i].x - walls[i].wide/2 && ax < walls[i].x + walls[i].wide/2 && ay > walls[i].y - walls[i].high/2 && ay < walls[i].y + walls[i].high/2) {
-            ax = int(random(width));
-            ay = int(random(height - 100));
-          }
-        }
-        a = true;
-        arot = int(random(100));
-      } else if (a == true && pi == false) {
-        px = int(random(width));
-        py = int(random(height - 100));
-        for (int i = 0; i < walls.length; i++) {
-          while (px > walls[i].x - walls[i].wide/2 && px < walls[i].x + walls[i].wide/2 && py > walls[i].y - walls[i].high/2 && py < walls[i].y + walls[i].high/2) {
-            px = int(random(width));
-            py = int(random(height - 100));
-          }
-        }
-        pi = true;
-        prot = int(random(100));
-      } else if (a == false && pi == false) {
-        if (int(random(10)) % 2 == 0) {
+        if (a == false && pi == true) {
           ax = int(random(width));
           ay = int(random(height - 100));
           for (int i = 0; i < walls.length; i++) {
@@ -66,7 +49,7 @@ class Pickup {
           }
           a = true;
           arot = int(random(100));
-        } else {
+        } else if (a == true && pi == false) {
           px = int(random(width));
           py = int(random(height - 100));
           for (int i = 0; i < walls.length; i++) {
@@ -77,6 +60,30 @@ class Pickup {
           }
           pi = true;
           prot = int(random(100));
+        } else if (a == false && pi == false) {
+          if (int(random(10)) % 2 == 0) {
+            ax = int(random(width));
+            ay = int(random(height - 100));
+            for (int i = 0; i < walls.length; i++) {
+              while (ax > walls[i].x - walls[i].wide/2 && ax < walls[i].x + walls[i].wide/2 && ay > walls[i].y - walls[i].high/2 && ay < walls[i].y + walls[i].high/2) {
+                ax = int(random(width));
+                ay = int(random(height - 100));
+              }
+            }
+            a = true;
+            arot = int(random(100));
+          } else {
+            px = int(random(width));
+            py = int(random(height - 100));
+            for (int i = 0; i < walls.length; i++) {
+              while (px > walls[i].x - walls[i].wide/2 && px < walls[i].x + walls[i].wide/2 && py > walls[i].y - walls[i].high/2 && py < walls[i].y + walls[i].high/2) {
+                px = int(random(width));
+                py = int(random(height - 100));
+              }
+            }
+            pi = true;
+            prot = int(random(100));
+          }
         }
       }
     }

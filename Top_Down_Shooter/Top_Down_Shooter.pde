@@ -27,13 +27,10 @@ void setup() {
   wi = width;
   h = height;
   title = int(random(8));
+  title = -1;
   titlefont = createFont("ArnoPro-Bold", 200);
 
   g = new Game();
-
-  for (int q = 0; q < z.length; q++) {
-    z[q] = new Zombie();
-  }
 
   looking = new PVector(0, 0);
   gunshot = new SoundFile(this, "gunshot.mp3");
@@ -62,9 +59,10 @@ void draw() {
       text("By: Not Me", width-wi/7, height-h/21);
     }
     textSize(107);
-    if (title == 7) {
-      text("Legacy of the Gordonger", wi/2, h/4);
-    } else if (title == 6) {
+    if (title == -1) {
+      text("Zombie Arena", wi/2, h/4);
+    }  else if (title == 7) {text("Legacy of The Gordonger", wi/2, h/4);}
+    else if (title == 6) {
       text("They call me Bread", wi/2, h/4);
     } else if (title == 5) {
       text("Arma VI Simulator 2016", wi/2, h/4);
@@ -90,7 +88,7 @@ void draw() {
       stroke(0, 0, q);
       line(width - 350 + q, height/2 - 20, width - 350 + q, height/2-35);
     }
-    
+
     for (int q = 0; q < 255; q++) {
       stroke(q, 0, 0);
       line(width - 350 + q, height/2+ 100, width - 350 + q, height/2-15+ 100);
@@ -131,48 +129,48 @@ void draw() {
     rotate(0.2);
     rect(0, 0, 30, 76, 5);
     popMatrix();
-    
+
     pushMatrix();
     translate(width-36, h/2+158);
     rotate(-0.4);
     rect(0, 0, 30, 76, 5);
     popMatrix();
-    
+
     fill(p.sr, p.sg, p.sb);
-    
+
     pushMatrix();
     translate(width-113, h/2+-28);
     rotate(0.2);
     rect(0, 0, 20, 66, 5);
     popMatrix();
-    
+
     pushMatrix();
     translate(width-71, h/2);
     rotate(-0.1);
     rect(0, 0, 75, 123, 10);
     popMatrix();
-    
+
     pushMatrix();
     translate(width-36, h/2+-31);
     rotate(-0.4);
     rect(0, 0, 20, 66, 5);
     popMatrix();
-    
+
     pushMatrix();
     translate(width-28, h/2+12);
     rotate(0.1);
     rect(0, 0, 20, 66, 5);
     popMatrix();
-    
+
     pushMatrix();
     translate(width-140, h/2+25);
     rotate(0.7);
     rect(0, 0, 20, 66, 5);
     popMatrix();
-    
+
     fill(210, 200, 150);
     ellipse(width-80, h/2-93, 45, 53);
-    
+
     stroke(0);
     beginShape();
     curveVertex(width-45, h/2-107);
@@ -180,14 +178,14 @@ void draw() {
     curveVertex(width-84, h/2-94);
     curveVertex(width-80, h/2-69);
     endShape();
-    
+
     fill(10, 100, 140);
     ellipse(width-72, h/2-95, 4, 3);
     line(width-72, h/2-97, width-77, h/2 - 96);
     line(width-72, h/2-97, width-66, h/2 - 96);
     line(width-71, h/2-93, width-65, h/2 - 96);
     line(width-71, h/2-93, width-78, h/2 - 95);
-    
+
     pushMatrix();
     translate(-22, 0);
     scale(1, 1);
@@ -197,7 +195,7 @@ void draw() {
     line(width-71, h/2-93, width-65, h/2 - 96);
     line(width-71, h/2-93, width-78, h/2 - 95);
     popMatrix();
-    
+
     line(width-90, h/2-76, width-73, h/2 - 77);
 
     stroke(0);
@@ -227,7 +225,9 @@ void keyReleased() {
 }
 
 void keyPressed() {
-  title = int(random(8));
+  if (key == '=') {
+    title = int(random(8));
+  }
   if (run == true) {
     g.gkeyPressed();
   }

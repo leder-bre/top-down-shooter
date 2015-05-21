@@ -1,7 +1,7 @@
 class Weapons {
   int totpammo = 30;
   int totmammo = 60;
-  int weapon = 3;
+  int weapon = 1;
   int canShoot = 0;
   int fireRate = 0;
   int recoil = 0;
@@ -10,13 +10,27 @@ class Weapons {
   int knife = 200;
   boolean canknife = true;
   boolean shot = false;
-  boolean shoot = true;
   /*
   Weapon
    1  = Pistol
    2 = AR
    3 = Melee
    */
+
+  void wsetup() {
+    totpammo = 30;
+    totmammo = 60;
+    weapon = 1;
+    canShoot = 0;
+    fireRate = 0;
+    recoil = 0;
+    pammo = 16;
+    mammo = 30;
+    knife = 200;
+    canknife = true;
+    shot = false;
+  }
+
   void run() {
 
     if (recoil > 0) {
@@ -147,8 +161,8 @@ class Weapons {
     vertex(313, 35);
     vertex(321, 38);
     endShape(CLOSE);
-    
-     if (weapon == 3) {
+
+    if (weapon == 3) {
       fill(127);
     } else {
       fill(127, 100);
@@ -160,7 +174,7 @@ class Weapons {
     vertex(332, 39);
     vertex(332, 35);
     endShape(CLOSE);
-    
+
     popMatrix();
     if (w.weapon == 1) {
       fill(150);

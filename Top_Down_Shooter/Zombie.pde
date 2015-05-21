@@ -228,8 +228,8 @@ class Zombie {
     }//so dank
     if (dist(p.location.x, p.location.y, x, y) < 40 && seen > 0) {
       if (attack == 0) {
-        p.health -= 30;
-        attack = 40;
+        p.health -= 15;
+        attack = 20;
       }
     }
   }
