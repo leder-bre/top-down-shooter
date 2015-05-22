@@ -1,3 +1,13 @@
+
+//Brendan Leder      22:38:17 May 21 2015
+
+//Top Down Shooter Game - "Zombie Arena"
+
+//A top down shooter style game that features
+//a single player that has to fight using 3
+//weapons against increasingly powerful waves
+//of variably powerful zombies
+
 import processing.sound.*;
 Game g;
 Player p;
@@ -21,7 +31,7 @@ PFont zFont;
 
 void setup() {
   smooth();
-  size(1280, 750);
+  size(1280, 800);
   zFont = createFont("Courier Bold", 10);
   run = false;
   wi = width;
